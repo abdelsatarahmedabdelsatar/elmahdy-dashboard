@@ -19,9 +19,9 @@ const UsersTables = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get("https://elmahdy.onrender.com/api/v1/users").then((res) => {
-      console.log(res);
-    });
+    // axios.get("https://elmahdy.onrender.com/api/v1/users").then((res) => {
+    //   console.log(res);
+    // });
 
     setData([
       {
@@ -117,10 +117,13 @@ const UsersTables = () => {
     ]);
   }, []);
 
-  const HandleAddUser = () => {
-    alert("add user !");
+  const handleUserEdit = () => {
+    alert("edit user !");
   };
 
+  const handleUserDelete = () => {
+    alert("delete user !");
+  };
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -142,8 +145,12 @@ const UsersTables = () => {
                   <TableCell key={index}>{value}</TableCell>
                 ))}
                 <TableCell key={index}>
-                  <Icon>edit</Icon>
-                  <Icon color="error">delete</Icon>
+                  <Icon onClick={handleUserEdit} style={{ cursor: "pointer" }}>
+                    edit
+                  </Icon>
+                  <Icon color="error" onClick={handleUserDelete} style={{ cursor: "pointer" }}>
+                    delete
+                  </Icon>
                 </TableCell>
               </TableRow>
             ))}

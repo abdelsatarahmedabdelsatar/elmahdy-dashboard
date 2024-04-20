@@ -111,7 +111,13 @@ const CategoriesTables = () => {
       },
     ]);
   }, []);
+  const handleCategoryEdit = () => {
+    alert("edit category !");
+  };
 
+  const handleCategoryDelete = () => {
+    alert("delete category !");
+  };
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -132,8 +138,16 @@ const CategoriesTables = () => {
                     <TableCell key={index}>{value}</TableCell>
                   ))}{" "}
                   <TableCell key={index}>
-                    <Icon>edit</Icon>
-                    <Icon color="error">delete</Icon>
+                    <Icon onClick={handleCategoryEdit} style={{ cursor: "pointer" }}>
+                      edit
+                    </Icon>
+                    <Icon
+                      color="error"
+                      onClick={handleCategoryDelete}
+                      style={{ cursor: "pointer" }}
+                    >
+                      delete
+                    </Icon>
                   </TableCell>
                 </TableRow>
               </>

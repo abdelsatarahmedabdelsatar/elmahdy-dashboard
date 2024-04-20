@@ -53,15 +53,14 @@ const routes = [
     route: "/brands",
     component: <BrandsTable />,
   },
-  {
-    type: "collapse",
-    name: "settings",
-    key: "settings",
-    icon: <Icon fontSize="small">settings</Icon>,
-    route: "/settings",
-    component: <Configurator />,
-  },
-  ,
+  // {
+  //   type: "collapse",
+  //   name: "settings",
+  //   key: "settings",
+  //   icon: <Icon fontSize="small">settings</Icon>,
+  //   route: "/settings",
+  //   component: <Configurator />,
+  // },
   // {
   //   type: "collapse",
   //   name: "RTL",

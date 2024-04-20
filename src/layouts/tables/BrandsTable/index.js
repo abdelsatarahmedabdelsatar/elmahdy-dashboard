@@ -58,6 +58,14 @@ const BrandsTable = () => {
     ]);
   }, []);
 
+  const handleBrandEdit = () => {
+    alert("edit brand !");
+  };
+
+  const handleBrandDelete = () => {
+    alert("delete brand !");
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -78,8 +86,12 @@ const BrandsTable = () => {
                     <TableCell key={index}>{value}</TableCell>
                   ))}{" "}
                   <TableCell key={index}>
-                    <Icon>edit</Icon>
-                    <Icon color="error">delete</Icon>
+                    <Icon onClick={handleBrandEdit} style={{ cursor: "pointer" }}>
+                      edit
+                    </Icon>
+                    <Icon color="error" onClick={handleBrandDelete} style={{ cursor: "pointer" }}>
+                      delete
+                    </Icon>
                   </TableCell>
                 </TableRow>
               </>

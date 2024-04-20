@@ -47,7 +47,13 @@ const ProductsTables = () => {
       },
     ]);
   }, []);
+  const handleProductEdit = () => {
+    alert("edit product !");
+  };
 
+  const handleProductDelete = () => {
+    alert("delete product !");
+  };
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -68,8 +74,12 @@ const ProductsTables = () => {
                     <TableCell key={index}>{value}</TableCell>
                   ))}{" "}
                   <TableCell key={index}>
-                    <Icon>edit</Icon>
-                    <Icon color="error">delete</Icon>
+                    <Icon onClick={handleProductEdit} style={{ cursor: "pointer" }}>
+                      edit
+                    </Icon>
+                    <Icon color="error" onClick={handleProductDelete} style={{ cursor: "pointer" }}>
+                      delete
+                    </Icon>
                   </TableCell>
                 </TableRow>
               </>
