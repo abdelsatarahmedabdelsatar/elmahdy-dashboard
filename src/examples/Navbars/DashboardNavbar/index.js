@@ -11,10 +11,11 @@ import UserModel from "layouts/popUpMpdels/UserModel";
 import BrandsModel from "layouts/popUpMpdels/BrandModel";
 import CategoryModel from "layouts/popUpMpdels/CategoryModel";
 import ProductModel from "layouts/popUpMpdels/ProductModel";
+import SubCategoryModel from "layouts/popUpMpdels/SubCategoryModel";
 
 import { useMaterialUIController, setTransparentNavbar } from "context";
 
-function DashboardNavbar({ absolute, light, isMini }) {
+function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
@@ -23,6 +24,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [userOpen, setUserOpen] = useState(false);
   const [productOpen, setProductOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [subcategoryOpen, setSubCategoryOpen] = useState(false);
   const [brandOpen, setBrandOpen] = useState(false);
 
   const handleUserOpen = () => {
@@ -44,6 +46,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   };
   const handleCategoryClose = () => {
     setCategoryOpen(false);
+  };
+
+  const handleSubCategoryOpen = () => {
+    setSubCategoryOpen(true);
+  };
+  const handleSubCategoryClose = () => {
+    setSubCategoryOpen(false);
   };
 
   const handleBrandOpen = () => {
@@ -118,14 +127,44 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDButton style={{ ...ButtonStyle }} onClick={handleProductOpen}>
             add product
           </MDButton>
+        ) : route == "subCategories" ? (
+          <MDButton style={{ ...ButtonStyle }} onClick={handleSubCategoryOpen}>
+            add sub category
+          </MDButton>
         ) : (
           ""
         )}
       </Toolbar>
-      <UserModel open={userOpen} onClose={handleUserClose} />
-      <BrandsModel open={brandOpen} onClose={handleBrandClose} />
-      <CategoryModel open={categoryOpen} onClose={handleCategoryClose} />
-      <ProductModel open={productOpen} onClose={handleProductClose} />
+      <BrandsModel
+        refresh={refresh}
+        setRefresh={setRefresh}
+        open={brandOpen}
+        onClose={handleBrandClose}
+      />
+      <CategoryModel
+        refresh={refresh}
+        setRefresh={setRefresh}
+        open={categoryOpen}
+        onClose={handleCategoryClose}
+      />
+      <SubCategoryModel
+        refresh={refresh}
+        setRefresh={setRefresh}
+        open={subcategoryOpen}
+        onClose={handleSubCategoryClose}
+      />
+      <ProductModel
+        refresh={refresh}
+        setRefresh={setRefresh}
+        open={productOpen}
+        onClose={handleProductClose}
+      />
+      <UserModel
+        refresh={refresh}
+        setRefresh={setRefresh}
+        open={userOpen}
+        onClose={handleUserClose}
+      />
     </AppBar>
   );
 }
@@ -134,12 +173,16 @@ DashboardNavbar.defaultProps = {
   absolute: false,
   light: false,
   isMini: false,
+  refresh: false,
+  setRefresh: undefined,
 };
 
 DashboardNavbar.propTypes = {
   absolute: PropTypes.bool,
   light: PropTypes.bool,
   isMini: PropTypes.bool,
+  refresh: PropTypes.bool,
+  setRefresh: PropTypes.func,
 };
 
 export default DashboardNavbar;

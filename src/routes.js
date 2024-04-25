@@ -1,8 +1,4 @@
 import Dashboard from "layouts/dashboard";
-// import Billing from "layouts/billing";
-// import RTL from "layouts/rtl";
-// import Notifications from "layouts/notifications";
-// import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Icon from "@mui/material/Icon";
@@ -10,7 +6,7 @@ import ProductsTables from "./layouts/tables/ProductsTables/index";
 import CategoriesTables from "./layouts/tables/CategoriesTables/index";
 import BrandsTable from "./layouts/tables/BrandsTable/index";
 import UsersTables from "./layouts/tables/UsersTables/index";
-import Configurator from "./examples/Configurator/index";
+import SubCategoriesTables from "layouts/tables/SubCategoriesTables";
 
 const routes = [
   {
@@ -44,6 +40,14 @@ const routes = [
     icon: <Icon fontSize="small">dns</Icon>,
     route: "/categories",
     component: <CategoriesTables />,
+  },
+  {
+    type: "collapse",
+    name: "sub categories",
+    key: "subCategories",
+    icon: <Icon fontSize="small">dns</Icon>,
+    route: "/subCategories",
+    component: <SubCategoriesTables />,
   },
   {
     type: "collapse",
@@ -85,22 +89,6 @@ const routes = [
   //   route: "/profile",
   //   component: <Profile />,
   // }
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
 ];
 
 export default routes;

@@ -14,15 +14,15 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import Icon from "@mui/material/Icon";
 import MDSpinner from "components/MDSpinner/MDSpinner";
-import CategoryModel from "layouts/popUpMpdels/CategoryModel";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import axiosInstance from "axiosConfig/instance";
+import SubCategoryModel from "layouts/popUpMpdels/SubCategoryModel";
 
-const CategoriesTables = () => {
+const SubCategoriesTables = () => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(true);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [editedCategory, setEditedCategory] = useState({});
+  const [editedSubCategory, setEditedSubCategory] = useState({});
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -49,7 +49,7 @@ const CategoriesTables = () => {
   };
 
   const handleCategoryOpen = (obj) => {
-    setEditedCategory(obj);
+    setEditedSubCategory(obj);
     setCategoryOpen(true);
   };
   const handleCategoryClose = () => {
@@ -58,7 +58,7 @@ const CategoriesTables = () => {
 
   useEffect(() => {
     axiosInstance
-      .get("api/v1/category", {
+      .get("api/v1/subCategory", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -79,7 +79,7 @@ const CategoriesTables = () => {
 
   const handleCategoryDelete = (id) => {
     axiosInstance
-      .delete("api/v1/category/" + id, {
+      .delete("api/v1/subCategory/" + id, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -100,14 +100,13 @@ const CategoriesTables = () => {
         </div>
       ) : (
         <>
-          {" "}
           <DashboardNavbar refresh={refresh} setRefresh={setRefresh} />
           <TableContainer component={Paper}>
             <Table>
               <thead style={{ display: "table-header-group", color: "#FFF" }}>
                 <tr style={{ backgroundColor: "#444" }}>
-                  <TableCell>logo</TableCell>
                   <TableCell>name</TableCell>
+                  <TableCell>category</TableCell>
                   <TableCell>created time</TableCell>
                   <TableCell>action</TableCell>
                 </tr>
@@ -117,14 +116,8 @@ const CategoriesTables = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>
-                        <img
-                          width={30}
-                          height={30}
-                          src={`https://elmahdy.onrender.com/${row.image}`}
-                        />
-                      </TableCell>
                       <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.category.name}</TableCell>
                       <TableCell>{row.createdAt.split("T")[0]}</TableCell>
 
                       <TableCell>
@@ -158,12 +151,12 @@ const CategoriesTables = () => {
 
       <Footer />
       {categoryOpen && (
-        <CategoryModel
+        <SubCategoryModel
           refresh={refresh}
           setRefresh={setRefresh}
           open={true}
           onClose={handleCategoryClose}
-          editedCategory={editedCategory}
+          editedSubCategory={editedSubCategory}
         />
       )}
       <div>
@@ -178,12 +171,12 @@ const CategoriesTables = () => {
   );
 };
 
-CategoriesTables.defaultProps = {
+SubCategoriesTables.defaultProps = {
   data: [],
 };
 
-CategoriesTables.propTypes = {
+SubCategoriesTables.propTypes = {
   data: PropTypes.array,
 };
 
-export default CategoriesTables;
+export default SubCategoriesTables;

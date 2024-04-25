@@ -50,12 +50,12 @@ function PageLayout({ background, children }) {
 
 // Setting default values for the props for PageLayout
 PageLayout.defaultProps = {
-  background: "default",
+  background: "#EEE",
 };
 
 // Typechecking props for the PageLayout
 PageLayout.propTypes = {
-  background: PropTypes.oneOf(["white", "light", "default"]),
+  background: PropTypes.oneOf(["white", "light", "#EEE"]),
   children: PropTypes.node.isRequired,
 };
 
