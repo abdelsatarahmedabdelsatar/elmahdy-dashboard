@@ -83,7 +83,7 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
         {Object.keys(editedBrand).length != 0 ? "edit brand" : "add new brand"}
       </DialogTitle>
       <DialogContent>
-        <ImageUpload setImage={setImage} />
+        <ImageUpload setImage={setImage} imagePath={editedBrand?.image} />
 
         <TextField
           autoFocus
@@ -102,7 +102,11 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleAddBrand} style={{ backgroundColor: "#43F", color: "#FFF" }}>
+        <Button
+          disabled={loader}
+          onClick={handleAddBrand}
+          style={{ backgroundColor: "#43F", color: "#FFF" }}
+        >
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedBrand).length != 0 ? (

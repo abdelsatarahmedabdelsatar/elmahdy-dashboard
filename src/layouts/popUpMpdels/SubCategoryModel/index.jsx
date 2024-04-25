@@ -144,8 +144,11 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleAddSubCategory} style={{ backgroundColor: "#43F", color: "#FFF" }}>
-          {}
+        <Button
+          disabled={loader}
+          onClick={handleAddSubCategory}
+          style={{ backgroundColor: "#43F", color: "#FFF" }}
+        >
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedSubCategory).length != 0 ? (

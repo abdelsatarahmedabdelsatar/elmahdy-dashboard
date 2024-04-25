@@ -17,6 +17,8 @@ import MDSpinner from "components/MDSpinner/MDSpinner";
 import ProductModel from "layouts/popUpMpdels/ProductModel";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import axiosInstance from "axiosConfig/instance";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 const ProductsTables = () => {
   const [data, setData] = useState([]);
@@ -65,6 +67,7 @@ const ProductsTables = () => {
       })
       .then((res) => {
         setData(res.data.data.data);
+        console.log(res.data.data.data);
         setLoader(false);
       })
       .catch((err) => {
@@ -107,8 +110,10 @@ const ProductsTables = () => {
                 <tr style={{ backgroundColor: "#444" }}>
                   <TableCell>title</TableCell>
                   <TableCell>price</TableCell>
-                  <TableCell>avg rating</TableCell>
+                  <TableCell>price after dicount</TableCell>
                   <TableCell>category</TableCell>
+                  <TableCell>sub category</TableCell>
+                  <TableCell>sold</TableCell>
                   <TableCell>quantity</TableCell>
                   <TableCell>action</TableCell>
                 </tr>
@@ -120,8 +125,29 @@ const ProductsTables = () => {
                     <TableRow key={index}>
                       <TableCell>{row.title}</TableCell>
                       <TableCell>{row.price}</TableCell>
-                      <TableCell>{row.ratingsAverage}</TableCell>
+                      <TableCell
+                        style={{
+                          textDecoration: row.priceAfterDiscount ? row.priceAfterDiscount : "",
+                        }}
+                      >
+                        {row.priceAfterDiscount ? row.priceAfterDiscount : "_____"}
+                      </TableCell>
                       <TableCell>{row.category.name}</TableCell>
+                      <TableCell>
+                        {row.subcategories.length ? (
+                          <>
+                            show
+                            <Select style={{ marginLeft: "6px" }}>
+                              {row.subcategories.map((c, i) => (
+                                <MenuItem key={i}>{c.name}</MenuItem>
+                              ))}
+                            </Select>
+                          </>
+                        ) : (
+                          "_____"
+                        )}
+                      </TableCell>
+                      <TableCell>{row.sold}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
                         <Icon onClick={() => handleproductOpen(row)} style={{ cursor: "pointer" }}>

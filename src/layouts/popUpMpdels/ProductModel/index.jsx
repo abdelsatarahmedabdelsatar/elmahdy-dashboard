@@ -178,14 +178,13 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
   return (
     <Dialog fullScreen open={open} onClose={onClose}>
       <DialogTitle>
-        {" "}
         {Object.keys(editedProduct).length != 0 ? "edit product" : "add new product"}
       </DialogTitle>
 
       <DialogContent>
         <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={3}>
           <Grid item md={6} sm={6}>
-            <ImageUpload setImage={setImage} />
+            <ImageUpload setImage={setImage} imagePath={editedProduct?.image} />
           </Grid>
           <Grid item md={6} sm={6}>
             <MultiImageUpload setMultiImage={setMultiImage} />
@@ -337,7 +336,11 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleAddProduct} style={{ backgroundColor: "#43F", color: "#FFF" }}>
+        <Button
+          disabled={loader}
+          onClick={handleAddProduct}
+          style={{ backgroundColor: "#43F", color: "#FFF" }}
+        >
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedProduct).length != 0 ? (

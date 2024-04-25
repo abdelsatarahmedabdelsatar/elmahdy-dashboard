@@ -86,7 +86,7 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
         {Object.keys(editedCategory).length != 0 ? "edit category" : "add new category"}
       </DialogTitle>
       <DialogContent>
-        <ImageUpload setImage={setImage} />
+        <ImageUpload setImage={setImage} imagePath={editedCategory?.image} />
 
         <TextField
           autoFocus
@@ -105,7 +105,11 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleAddCategory} style={{ backgroundColor: "#43F", color: "#FFF" }}>
+        <Button
+          disabled={loader}
+          onClick={handleAddCategory}
+          style={{ backgroundColor: "#43F", color: "#FFF" }}
+        >
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedCategory).length != 0 ? (

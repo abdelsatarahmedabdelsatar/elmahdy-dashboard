@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-const ImageUpload = ({ setImage }) => {
+const ImageUpload = ({ setImage, imagePath }) => {
   const [perviewImage, setPerviewImage] = useState(null);
   useEffect(() => {
     return () => {
@@ -50,6 +50,18 @@ const ImageUpload = ({ setImage }) => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </div>
+      ) : imagePath ? (
+        <img
+          onClick={selectFileFrontCover}
+          style={{
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%",
+            overflow: "hidden",
+            marginBottom: "20px",
+          }}
+          src={"https://elmahdy.onrender.com/" + imagePath}
+        />
       ) : (
         <img
           onClick={selectFileFrontCover}
@@ -70,10 +82,12 @@ const ImageUpload = ({ setImage }) => {
 
 ImageUpload.defaultProps = {
   setImage: undefined,
+  imagePath: "",
 };
 
 ImageUpload.propTypes = {
   setImage: PropTypes.func,
+  imagePath: PropTypes.string,
 };
 
 export default ImageUpload;

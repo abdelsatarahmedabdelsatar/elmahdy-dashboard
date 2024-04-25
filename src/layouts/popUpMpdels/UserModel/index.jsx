@@ -32,7 +32,6 @@ const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
   const [confirmPass, setConfirmPass] = useState(
     Object.keys(editedUser).length != 0 ? editedUser.passwordConfirm : ""
   );
-
   const [error, setError] = useState("");
   const [loader, serLoader] = useState(false);
   const cleanUp = () => {
@@ -120,7 +119,7 @@ const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
     <Dialog fullWidth open={open} onClose={onClose}>
       <DialogTitle> {Object.keys(editedUser).length != 0 ? "edit user" : "add user"}</DialogTitle>
       <DialogContent>
-        <ImageUpload setImage={setImage} />
+        <ImageUpload setImage={setImage} imagePath={editedUser?.profileImage} />
         <TextField
           autoFocus
           margin="dense"
@@ -197,7 +196,11 @@ const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
         >
           Cancel
         </Button>
-        <Button onClick={handleAddUser} style={{ backgroundColor: "#43F", color: "#FFF" }}>
+        <Button
+          disabled={loader}
+          onClick={handleAddUser}
+          style={{ backgroundColor: "#43F", color: "#FFF" }}
+        >
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedUser).length != 0 ? (
