@@ -65,6 +65,7 @@ const SubCategoriesTables = () => {
       })
       .then((res) => {
         setData(res.data.data.data);
+        console.log(res.data.data.data);
         setLoader(false);
       })
       .catch((err) => {
@@ -105,7 +106,8 @@ const SubCategoriesTables = () => {
             <Table>
               <thead style={{ display: "table-header-group", color: "#FFF" }}>
                 <tr style={{ backgroundColor: "#444" }}>
-                  <TableCell>name</TableCell>
+                  <TableCell>en name</TableCell>
+                  <TableCell>ar name</TableCell>
                   <TableCell>category</TableCell>
                   <TableCell>created time</TableCell>
                   <TableCell>action</TableCell>
@@ -116,8 +118,9 @@ const SubCategoriesTables = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.category.name}</TableCell>
+                      <TableCell>{row.EnName}</TableCell>
+                      <TableCell>{row.ArName}</TableCell>
+                      <TableCell>{row.category?.name}</TableCell>
                       <TableCell>{row.createdAt.split("T")[0]}</TableCell>
 
                       <TableCell>

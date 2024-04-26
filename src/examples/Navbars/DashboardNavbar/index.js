@@ -14,6 +14,7 @@ import ProductModel from "layouts/popUpMpdels/ProductModel";
 import SubCategoryModel from "layouts/popUpMpdels/SubCategoryModel";
 
 import { useMaterialUIController, setTransparentNavbar } from "context";
+import Icon from "@mui/material/Icon";
 
 function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
   const [navbarType, setNavbarType] = useState();
@@ -113,23 +114,23 @@ function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
         </MDBox>
         {route == "users" ? (
           <MDButton style={{ ...ButtonStyle }} onClick={handleUserOpen}>
-            add user
+            <Icon style={{ marginRight: "10px" }}>add</Icon> add user
           </MDButton>
         ) : route == "categories" ? (
           <MDButton style={{ ...ButtonStyle }} onClick={handleCategoryOpen}>
-            add category
+            <Icon style={{ marginRight: "10px" }}>add</Icon> add category
           </MDButton>
         ) : route == "brands" ? (
           <MDButton style={{ ...ButtonStyle }} onClick={handleBrandOpen}>
-            add brand
+            <Icon style={{ marginRight: "10px" }}>add</Icon> add brand
           </MDButton>
         ) : route == "products" ? (
           <MDButton style={{ ...ButtonStyle }} onClick={handleProductOpen}>
-            add product
+            <Icon style={{ marginRight: "10px" }}>add</Icon> add product
           </MDButton>
         ) : route == "subCategories" ? (
           <MDButton style={{ ...ButtonStyle }} onClick={handleSubCategoryOpen}>
-            add sub category
+            <Icon style={{ marginRight: "10px" }}>add</Icon> add sub category
           </MDButton>
         ) : (
           ""

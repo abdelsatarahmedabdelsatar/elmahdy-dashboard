@@ -12,12 +12,21 @@ import PropTypes from "prop-types";
 import axiosInstance from "axiosConfig/instance";
 import ImageUpload from "components/MDImageUpload";
 import MDSpinner from "components/MDSpinner/MDSpinner";
+import handleInputNameChange from "./../../../helpers/index";
+import Grid from "@mui/material/Grid";
 
 const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
-  const [name, setName] = useState(Object.keys(editedBrand).length != 0 ? editedBrand.name : "");
+  const [enName, setEnName] = useState(
+    Object.keys(editedBrand).length != 0 ? editedBrand.EnName : ""
+  );
+  const [arName, setArName] = useState(
+    Object.keys(editedBrand).length != 0 ? editedBrand.ArName : ""
+  );
+
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
+
   const handleAddBrand = () => {
     setLoader(true);
     if (Object.keys(editedBrand).length != 0) {
@@ -25,7 +34,8 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
         .put(
           "api/v1/brand/" + editedBrand._id,
           {
-            name: name,
+            EnName: enName,
+            ArName: arName,
             image: image,
           },
           {
@@ -41,7 +51,8 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
           onClose();
           setRefresh(!refresh);
           setImage({});
-          setName("");
+          setEnName("");
+          setArName("");
         })
         .catch((err) => {
           setLoader(false);
@@ -52,7 +63,8 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
         .post(
           "api/v1/brand",
           {
-            name: name,
+            EnName: enName,
+            ArName: arName,
             image: image,
           },
           {
@@ -68,13 +80,19 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
           setRefresh(!refresh);
           onClose();
           setImage({});
-          setName("");
+          setEnName("");
+          setArName("");
         })
         .catch((err) => {
           setLoader(false);
           setError(err.response.data.errors[0].msg);
         });
     }
+  };
+
+  const handleChechLangAndChange = (ev, lng) => {
+    if (lng == "ar") setArName(handleInputNameChange(ev, lng));
+    else setEnName(handleInputNameChange(ev, lng));
   };
 
   return (
@@ -85,15 +103,30 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
       <DialogContent>
         <ImageUpload setImage={setImage} imagePath={editedBrand?.image} />
 
-        <TextField
-          autoFocus
-          margin="dense"
-          label="name"
-          type="text"
-          fullWidth
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={1.5}>
+          <Grid item xs={12} sm={6} md={4} lg={6}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="english name"
+              type="text"
+              fullWidth
+              value={enName}
+              onChange={(eve) => handleChechLangAndChange(eve, "en")}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={6}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="arabic name"
+              type="text"
+              fullWidth
+              value={arName}
+              onChange={(eve) => handleChechLangAndChange(eve, "ar")}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
       <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
         {error}

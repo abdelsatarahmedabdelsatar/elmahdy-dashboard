@@ -116,7 +116,13 @@ function Basic() {
               ""
             )}
             <MDBox mt={2} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth onClick={handleSignIn}>
+              <MDButton
+                disabled={signInLoader}
+                variant="gradient"
+                color="info"
+                fullWidth
+                onClick={handleSignIn}
+              >
                 {signInLoader ? <MDSpinner color="white" /> : "sign in"}
               </MDButton>
             </MDBox>

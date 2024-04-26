@@ -108,12 +108,14 @@ const ProductsTables = () => {
             <Table>
               <thead style={{ display: "table-header-group", color: "#FFF" }}>
                 <tr style={{ backgroundColor: "#444" }}>
-                  <TableCell>title</TableCell>
+                  <TableCell>en name</TableCell>
+                  <TableCell>ar name</TableCell>
                   <TableCell>price</TableCell>
                   <TableCell>price after dicount</TableCell>
                   <TableCell>category</TableCell>
                   <TableCell>sub category</TableCell>
                   <TableCell>sold</TableCell>
+                  <TableCell>brand</TableCell>
                   <TableCell>quantity</TableCell>
                   <TableCell>action</TableCell>
                 </tr>
@@ -123,16 +125,17 @@ const ProductsTables = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>{row.title}</TableCell>
+                      <TableCell>{row.enTitle}</TableCell>
+                      <TableCell>{row.arTitle}</TableCell>
                       <TableCell>{row.price}</TableCell>
                       <TableCell
                         style={{
-                          textDecoration: row.priceAfterDiscount ? row.priceAfterDiscount : "",
+                          textDecoration: row.priceAfterDiscount ? "line-through" : "",
                         }}
                       >
                         {row.priceAfterDiscount ? row.priceAfterDiscount : "_____"}
                       </TableCell>
-                      <TableCell>{row.category.name}</TableCell>
+                      <TableCell>{row.category?.name}</TableCell>
                       <TableCell>
                         {row.subcategories.length ? (
                           <>
@@ -148,6 +151,7 @@ const ProductsTables = () => {
                         )}
                       </TableCell>
                       <TableCell>{row.sold}</TableCell>
+                      <TableCell>{row.brand?.name ? row.brand?.name : "_____"}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
                         <Icon onClick={() => handleproductOpen(row)} style={{ cursor: "pointer" }}>

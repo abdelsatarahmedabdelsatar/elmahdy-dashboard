@@ -109,7 +109,8 @@ const BrandsTable = () => {
               <thead style={{ display: "table-header-group", color: "#FFF" }}>
                 <tr style={{ backgroundColor: "#444" }}>
                   <TableCell>logo</TableCell>
-                  <TableCell>name</TableCell>
+                  <TableCell>en name</TableCell>
+                  <TableCell>ar name</TableCell>
                   <TableCell>created time</TableCell>
                   <TableCell>action</TableCell>
                 </tr>
@@ -127,7 +128,8 @@ const BrandsTable = () => {
                           src={`https://elmahdy.onrender.com/${row.image}`}
                         />
                       </TableCell>
-                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.EnName}</TableCell>
+                      <TableCell>{row.ArName}</TableCell>
                       <TableCell>{row.createdAt.split("T")[0]}</TableCell>
                       <TableCell>
                         <Icon onClick={() => handleBrandOpen(row)} style={{ cursor: "pointer" }}>

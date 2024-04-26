@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   TextField,
 } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -16,10 +17,15 @@ import axiosInstance from "axiosConfig/instance";
 import ImageUpload from "components/MDImageUpload";
 import MultiImageUpload from "components/MDMultiImageUpload";
 import MDSpinner from "components/MDSpinner/MDSpinner";
+import Icon from "@mui/material/Icon";
+import handleInputNameChange from "./../../../helpers/index";
 
 const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => {
-  const [name, setName] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.title : ""
+  const [enTitle, setEnTitle] = useState(
+    Object.keys(editedProduct).length != 0 ? editedProduct.EnTitle : ""
+  );
+  const [arTitle, setArTitle] = useState(
+    Object.keys(editedProduct).length != 0 ? editedProduct.ArTitle : ""
   );
   const [image, setImage] = useState(null);
   const [multiImage, setMultiImage] = useState([]);
@@ -82,7 +88,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
       });
   }, []);
 
-  const handleMultiImageChange = (event) => {
+  const handleColorChange = (event) => {
     setColor(event.target.value);
   };
 
@@ -106,7 +112,8 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
         .put(
           "api/v1/product/" + editedProduct._id,
           {
-            title: name,
+            EnTitle: enTitle,
+            ArTitle: arTitle,
             description: description,
             quantity: quantity,
             sold: sold,
@@ -142,7 +149,8 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
         .post(
           "api/v1/product",
           {
-            title: name,
+            EnTitle: enTitle,
+            ArTitle: arTitle,
             description: description,
             quantity: quantity,
             sold: sold,
@@ -175,6 +183,11 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
     }
   };
 
+  const handleChechLangAndChange = (ev, lng) => {
+    if (lng == "ar") setArTitle(handleInputNameChange(ev, lng));
+    else setEnTitle(handleInputNameChange(ev, lng));
+  };
+
   return (
     <Dialog fullScreen open={open} onClose={onClose}>
       <DialogTitle>
@@ -192,18 +205,29 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           {/* <Grid item md={6} sm={6}>
           <ImageUpload setImage={setImage} />
         </Grid> */}
-          <Grid item xs={12} sm={6} md={4} lg={4}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               autoFocus
               margin="dense"
-              label="name"
+              label="english title"
               type="text"
               fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={enTitle}
+              onChange={(eve) => handleChechLangAndChange(eve, "en")}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={4}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="arabic title"
+              type="text"
+              fullWidth
+              value={arTitle}
+              onChange={(eve) => handleChechLangAndChange(eve, "ar")}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               autoFocus
               margin="dense"
@@ -214,7 +238,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               onChange={(e) => setQuantity(e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={4}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               autoFocus
               margin="dense"
@@ -261,70 +285,97 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           </Grid>
           <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
             <Grid container>
-              <InputLabel style={{ margin: "8px" }}>choose product color</InputLabel>
-              <Select
-                multiple
-                value={color}
-                onChange={handleMultiImageChange}
-                renderValue={(selected) => selected.join(", ")}
-              >
-                <MenuItem value="" disabled>
-                  select
-                </MenuItem>
-                <MenuItem value="red">red</MenuItem>
-                <MenuItem value="blue">green</MenuItem>
-                <MenuItem value="yellow">blue</MenuItem>
-                <MenuItem value="white">white</MenuItem>
-                <MenuItem value="pink">pink</MenuItem>
-              </Select>
-              <Button style={{ fontSize: "11px" }} size="small" onClick={() => setColor([])}>
-                Clear
-              </Button>
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ paddingLeft: "3px", paddingRight: "3px", backgroundColor: "#FFF" }}
+                >
+                  color
+                </InputLabel>
+                <Select
+                  style={{ height: "38px" }}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={color}
+                  onChange={handleColorChange}
+                  multiple
+                >
+                  <MenuItem value="" disabled>
+                    choose
+                  </MenuItem>
+                  <MenuItem value="white">white</MenuItem>
+                  <MenuItem value="red">red</MenuItem>
+                  <MenuItem value="blue">green</MenuItem>
+                  <MenuItem value="yellow">blue</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
           <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
             <Grid container>
-              <InputLabel style={{ margin: "5px" }}>choose category</InputLabel>
-              <Select value={category} onChange={handleCategoryChange}>
-                <MenuItem value="" disabled>
-                  select
-                </MenuItem>
-                {categories.map((c) => (
-                  <MenuItem key={c._id} value={c._id}>
-                    {c.name}
+              <FormControl fullWidth>
+                <InputLabel
+                  style={{ paddingLeft: "3px", paddingRight: "3px", backgroundColor: "#FFF" }}
+                >
+                  choose category
+                </InputLabel>
+                <Select style={{ height: "38px" }} value={category} onChange={handleCategoryChange}>
+                  <MenuItem value="" disabled>
+                    select
                   </MenuItem>
-                ))}
-              </Select>
+                  {categories.map((c) => (
+                    <MenuItem key={c._id} value={c._id}>
+                      {c.EnName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
           <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
             <Grid container>
-              <InputLabel style={{ margin: "5px" }}>choose sub category</InputLabel>
-              <Select value={subCategory} onChange={handleSubCategoryChange}>
-                <MenuItem value="" disabled>
-                  select
-                </MenuItem>
-                {filteredSubCategories.map((s) => (
-                  <MenuItem key={s._id} value={s._id}>
-                    {s.name}
+              <FormControl fullWidth>
+                <InputLabel
+                  style={{ paddingLeft: "3px", paddingRight: "3px", backgroundColor: "#FFF" }}
+                >
+                  choose sub category
+                </InputLabel>
+                <Select
+                  style={{ height: "38px" }}
+                  value={subCategory}
+                  onChange={handleSubCategoryChange}
+                >
+                  <MenuItem value="" disabled>
+                    select
                   </MenuItem>
-                ))}
-              </Select>
+                  {filteredSubCategories.map((s) => (
+                    <MenuItem key={s._id} value={s._id}>
+                      {s.EnName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
           <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
             <Grid container>
-              <InputLabel style={{ margin: "5px" }}>choose product brand</InputLabel>
-              <Select value={brand} onChange={handleBrandsChange}>
-                <MenuItem value="" disabled>
-                  select
-                </MenuItem>
-                {brands.map((b) => (
-                  <MenuItem key={b._id} value={b._id}>
-                    {b.name}
+              <FormControl fullWidth>
+                <InputLabel
+                  style={{ paddingLeft: "3px", paddingRight: "3px", backgroundColor: "#FFF" }}
+                >
+                  choose product brand
+                </InputLabel>
+                <Select style={{ height: "38px" }} value={brand} onChange={handleBrandsChange}>
+                  <MenuItem value="" disabled>
+                    select
                   </MenuItem>
-                ))}
-              </Select>
+                  {brands.map((b) => (
+                    <MenuItem key={b._id} value={b._id}>
+                      {b.EnName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
         </Grid>
@@ -344,9 +395,15 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedProduct).length != 0 ? (
-            "edit product"
+            <>
+              <Icon style={{ marginRight: "8px" }}>modeEdit</Icon>
+              edit
+            </>
           ) : (
-            "add product"
+            <>
+              <Icon style={{ marginRight: "8px" }}>add</Icon>
+              add
+            </>
           )}
         </Button>
       </DialogActions>

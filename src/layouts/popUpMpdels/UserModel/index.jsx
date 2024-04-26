@@ -12,6 +12,8 @@ import { PropTypes } from "prop-types";
 import axiosInstance from "axiosConfig/instance";
 import ImageUpload from "components/MDImageUpload";
 import MDSpinner from "components/MDSpinner/MDSpinner";
+import Grid from "@mui/material/Grid";
+import Icon from "@mui/material/Icon";
 
 const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
   const [username, setUsername] = useState(
@@ -120,69 +122,101 @@ const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
       <DialogTitle> {Object.keys(editedUser).length != 0 ? "edit user" : "add user"}</DialogTitle>
       <DialogContent>
         <ImageUpload setImage={setImage} imagePath={editedUser?.profileImage} />
-        <TextField
-          autoFocus
-          margin="dense"
-          label="full name"
-          type="text"
-          fullWidth
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          label="username"
-          type="text"
-          fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          label="email"
-          type="email"
-          fullWidth
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          label="address"
-          type="text"
-          fullWidth
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          label="mobile"
-          type="text"
-          fullWidth
-          value={mobile}
-          onChange={(e) => setMobile(e.target.value)}
-        />
-        <TextField
-          margin="dense"
-          label="password"
-          type="password"
-          fullWidth
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-        />
-        <TextField
-          margin="dense"
-          label="password"
-          type="password"
-          fullWidth
-          value={confirmPass}
-          onChange={(e) => setConfirmPass(e.target.value)}
-        />
+        <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={3}>
+          <Grid item md={6} xs={12}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="full name"
+              type="text"
+              fullWidth
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="username"
+              type="text"
+              fullWidth
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </Grid>
 
-        <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
+          <Grid item md={6} xs={12}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="email"
+              type="email"
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="mobile"
+              type="text"
+              fullWidth
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+            />
+          </Grid>
+          <Grid item md={12} xs={12}>
+            {" "}
+            <TextField
+              autoFocus
+              margin="dense"
+              label="address"
+              type="text"
+              fullWidth
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </Grid>
+          {Object.keys(editedUser).length == 0 ? (
+            <>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  margin="dense"
+                  label="password"
+                  type="password"
+                  fullWidth
+                  value={pass}
+                  onChange={(e) => setPass(e.target.value)}
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  margin="dense"
+                  label="confirm password"
+                  type="password"
+                  fullWidth
+                  value={confirmPass}
+                  onChange={(e) => setConfirmPass(e.target.value)}
+                />
+              </Grid>
+            </>
+          ) : (
+            ""
+          )}
+        </Grid>
+        <p
+          style={{
+            color: "red",
+            display: "flex",
+            justifyContent: "center",
+            fontSize: "15px",
+            marginTop: "5px",
+          }}
+        >
           {error}
         </p>
       </DialogContent>
@@ -204,9 +238,15 @@ const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedUser).length != 0 ? (
-            "edit user"
+            <>
+              <Icon style={{ marginRight: "8px" }}>modeEdit</Icon>
+              edit
+            </>
           ) : (
-            "add user"
+            <>
+              <Icon style={{ marginRight: "8px" }}>add</Icon>
+              add
+            </>
           )}
         </Button>
       </DialogActions>

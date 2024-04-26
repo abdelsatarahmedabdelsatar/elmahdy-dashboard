@@ -35,7 +35,7 @@ function Footer() {
       width="100%"
       display="flex"
       flexDirection={{ xs: "column", lg: "row" }}
-      justifyContent="center"
+      justifyContent="end"
       alignItems="center"
       px={1.5}
       py={5}

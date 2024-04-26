@@ -65,6 +65,7 @@ const CategoriesTables = () => {
       })
       .then((res) => {
         setData(res.data.data.data);
+        console.log(res.data.data.data);
         setLoader(false);
       })
       .catch((err) => {
@@ -107,7 +108,8 @@ const CategoriesTables = () => {
               <thead style={{ display: "table-header-group", color: "#FFF" }}>
                 <tr style={{ backgroundColor: "#444" }}>
                   <TableCell>logo</TableCell>
-                  <TableCell>name</TableCell>
+                  <TableCell>en name</TableCell>
+                  <TableCell>ar name</TableCell>
                   <TableCell>created time</TableCell>
                   <TableCell>action</TableCell>
                 </tr>
@@ -124,7 +126,8 @@ const CategoriesTables = () => {
                           src={`https://elmahdy.onrender.com/${row.image}`}
                         />
                       </TableCell>
-                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.EnName}</TableCell>
+                      <TableCell>{row.ArName}</TableCell>
                       <TableCell>{row.createdAt.split("T")[0]}</TableCell>
 
                       <TableCell>

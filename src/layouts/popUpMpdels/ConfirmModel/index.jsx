@@ -10,6 +10,12 @@ import {
 import PropTypes from "prop-types";
 
 const ConfirmModal = ({ title, open, onClose, onConfirm }) => {
+  const handleConfirmation = (eve) => {
+    onConfirm();
+    eve.target.disabled = "true";
+    eve.target.innerHTML = "...";
+  };
+
   return (
     <Dialog fullWidth open={open} onClose={onClose}>
       <DialogTitle>confirmation</DialogTitle>
@@ -18,7 +24,11 @@ const ConfirmModal = ({ title, open, onClose, onConfirm }) => {
         <Button onClick={onClose} color="dark">
           Cancel
         </Button>
-        <Button onClick={onConfirm} style={{ backgroundColor: "red", color: "#FFF" }} autoFocus>
+        <Button
+          onClick={handleConfirmation}
+          style={{ backgroundColor: "red", color: "#FFF" }}
+          autoFocus
+        >
           Confirm
         </Button>
       </DialogActions>

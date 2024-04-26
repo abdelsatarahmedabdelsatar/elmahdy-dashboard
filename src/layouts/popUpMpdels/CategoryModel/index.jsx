@@ -11,10 +11,16 @@ import PropTypes from "prop-types";
 import axiosInstance from "axiosConfig/instance";
 import ImageUpload from "components/MDImageUpload";
 import MDSpinner from "components/MDSpinner/MDSpinner";
+import Grid from "@mui/material/Grid";
+import Icon from "@mui/material/Icon";
+import handleInputNameChange from "./../../../helpers/index";
 
 const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) => {
-  const [name, setName] = useState(
-    Object.keys(editedCategory).length != 0 ? editedCategory.name : ""
+  const [arName, setArName] = useState(
+    Object.keys(editedCategory).length != 0 ? editedCategory.ArName : ""
+  );
+  const [enName, setEnName] = useState(
+    Object.keys(editedCategory).length != 0 ? editedCategory.EnName : ""
   );
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
@@ -27,7 +33,8 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
         .put(
           "api/v1/category/" + editedCategory._id,
           {
-            name: name,
+            EnName: enName,
+            ArName: arName,
             image: image,
           },
           {
@@ -43,7 +50,8 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
           onClose();
           setRefresh(!refresh);
           setImage({});
-          setName("");
+          setEnName("");
+          setArName("");
         })
         .catch((err) => {
           setLoader(false);
@@ -54,7 +62,8 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
         .post(
           "api/v1/category",
           {
-            name: name,
+            EnName: enName,
+            ArName: arName,
             image: image,
           },
           {
@@ -70,7 +79,8 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
           setRefresh(!refresh);
           onClose();
           setImage({});
-          setName("");
+          setEnName("");
+          setArName("");
         })
         .catch((err) => {
           setLoader(false);
@@ -79,6 +89,10 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
     }
   };
 
+  const handleChechLangAndChange = (ev, lng) => {
+    if (lng == "ar") setArName(handleInputNameChange(ev, lng));
+    else setEnName(handleInputNameChange(ev, lng));
+  };
   return (
     <Dialog fullWidth open={open} onClose={onClose}>
       <DialogTitle>
@@ -88,15 +102,30 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
       <DialogContent>
         <ImageUpload setImage={setImage} imagePath={editedCategory?.image} />
 
-        <TextField
-          autoFocus
-          margin="dense"
-          label="name"
-          type="text"
-          fullWidth
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={1.5}>
+          <Grid item xs={12} sm={6} md={4} lg={6}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="english name"
+              type="text"
+              fullWidth
+              value={enName}
+              onChange={(eve) => handleChechLangAndChange(eve, "en")}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={6}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="arabic name"
+              type="text"
+              fullWidth
+              value={arName}
+              onChange={(eve) => handleChechLangAndChange(eve, "ar")}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
       <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
         {error}
@@ -113,9 +142,15 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedCategory).length != 0 ? (
-            "edit category"
+            <>
+              <Icon style={{ marginRight: "8px" }}>modeEdit</Icon>
+              edit
+            </>
           ) : (
-            "add category"
+            <>
+              <Icon style={{ marginRight: "8px" }}>add</Icon>
+              add
+            </>
           )}
         </Button>
       </DialogActions>

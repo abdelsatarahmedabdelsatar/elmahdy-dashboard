@@ -38,11 +38,11 @@ const MultiImageUpload = ({ setMultiImage }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#EFEFEF",
+            backgroundColor: "#EFE",
           }}
           onClick={selectFileFrontCover}
         >
-          <h5>{imagesLength} images</h5>
+          <p style={{ color: "#2d3" }}>{imagesLength} images</p>
         </div>
       ) : (
         <img

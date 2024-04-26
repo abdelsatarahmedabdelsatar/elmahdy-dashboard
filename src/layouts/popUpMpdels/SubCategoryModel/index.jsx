@@ -5,8 +5,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
   Grid,
-  Input,
+  Icon,
   MenuItem,
   Select,
   TextField,
@@ -15,10 +16,14 @@ import PropTypes from "prop-types";
 import axiosInstance from "axiosConfig/instance";
 import InputLabel from "@mui/material/InputLabel";
 import MDSpinner from "components/MDSpinner/MDSpinner";
+import handleInputNameChange from "./../../../helpers/index";
 
 const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategory }) => {
-  const [name, setName] = useState(
-    Object.keys(editedSubCategory).length != 0 ? editedSubCategory.name : ""
+  const [arName, setArName] = useState(
+    Object.keys(editedSubCategory).length != 0 ? editedSubCategory.ArName : ""
+  );
+  const [enName, setEnName] = useState(
+    Object.keys(editedSubCategory).length != 0 ? editedSubCategory.EnName : ""
   );
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
@@ -26,7 +31,8 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
   const [loader, setLoader] = useState(false);
 
   const cleanUp = () => {
-    setName("");
+    setEnName("");
+    setArName("");
     setCategories([]);
     setCategoryId("");
   };
@@ -50,6 +56,11 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
     setCategoryId(e.target.value);
   };
 
+  const handleChechLangAndChange = (ev, lng) => {
+    if (lng == "ar") setArName(handleInputNameChange(ev, lng));
+    else setEnName(handleInputNameChange(ev, lng));
+  };
+
   const handleAddSubCategory = () => {
     setLoader(true);
     if (Object.keys(editedSubCategory).length != 0) {
@@ -57,7 +68,8 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
         .put(
           "api/v1/subCategory/" + editedSubCategory._id,
           {
-            name: name,
+            EnName: enName,
+            ArName: arName,
             category: categoryId,
           },
           {
@@ -71,8 +83,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
           setError("");
           onClose();
           setRefresh(!refresh);
-          setCategoryId("");
-          setName("");
+          cleanUp();
         })
         .catch((err) => {
           setLoader(false);
@@ -83,7 +94,8 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
         .post(
           "api/v1/subCategory",
           {
-            name: name,
+            EnName: enName,
+            ArName: arName,
             category: categoryId,
           },
           {
@@ -97,8 +109,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
           setError("");
           setRefresh(!refresh);
           onClose();
-          setCategoryId("");
-          setName("");
+          cleanUp();
         })
         .catch((err) => {
           setLoader(false);
@@ -113,28 +124,53 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
         {Object.keys(editedSubCategory).length != 0 ? "edit sub category" : "add new sub category"}
       </DialogTitle>
       <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          label="name"
-          type="text"
-          fullWidth
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={1.5}>
+          <Grid item xs={12} sm={6} md={4} lg={6}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="english name"
+              type="text"
+              fullWidth
+              value={enName}
+              onChange={(eve) => handleChechLangAndChange(eve, "en")}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={6}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="arabic name"
+              type="text"
+              fullWidth
+              value={arName}
+              onChange={(eve) => handleChechLangAndChange(eve, "ar")}
+            />
+          </Grid>
+        </Grid>
 
-        <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={4} lg={2}>
-          <Grid container>
-            <InputLabel style={{ margin: "5px" }}>select category</InputLabel>
-            <Select value={categoryId} onChange={handleCategoryChange}>
-              <MenuItem value="">select ...</MenuItem>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
+          <FormControl fullWidth style={{ marginTop: "10px" }}>
+            <InputLabel
+              id="demo-simple-select-label"
+              style={{ paddingLeft: "3px", paddingRight: "3px", backgroundColor: "#FFF" }}
+            >
+              category
+            </InputLabel>
+            <Select
+              style={{ height: "42px" }}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={categoryId}
+              onChange={handleCategoryChange}
+            >
               {categories.map((c) => (
                 <MenuItem key={c._id} value={c._id}>
                   {c.name}
                 </MenuItem>
               ))}
             </Select>
-          </Grid>
+          </FormControl>
         </Grid>
       </DialogContent>
       <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
@@ -147,14 +183,20 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
         <Button
           disabled={loader}
           onClick={handleAddSubCategory}
-          style={{ backgroundColor: "#43F", color: "#FFF" }}
+          style={{ backgroundColor: "#43F", color: "#FFF", padding: "12px" }}
         >
           {loader ? (
             <MDSpinner color="white" />
           ) : Object.keys(editedSubCategory).length != 0 ? (
-            "edit sub category"
+            <>
+              <Icon style={{ marginRight: "8px" }}>modeEdit</Icon>
+              edit sub category
+            </>
           ) : (
-            "add sub category"
+            <>
+              <Icon style={{ marginRight: "8px" }}>add</Icon>
+              add
+            </>
           )}
         </Button>
       </DialogActions>
