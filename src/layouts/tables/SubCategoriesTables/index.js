@@ -17,6 +17,7 @@ import MDSpinner from "components/MDSpinner/MDSpinner";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import axiosInstance from "axiosConfig/instance";
 import SubCategoryModel from "layouts/popUpMpdels/SubCategoryModel";
+import { toast } from "sonner";
 
 const SubCategoriesTables = () => {
   const [data, setData] = useState([]);
@@ -65,7 +66,6 @@ const SubCategoriesTables = () => {
       })
       .then((res) => {
         setData(res.data.data.data);
-        console.log(res.data.data.data);
         setLoader(false);
       })
       .catch((err) => {
@@ -88,6 +88,7 @@ const SubCategoriesTables = () => {
       .then(() => {
         setRefresh(!refresh);
         handleConfirmDeleteClose();
+        toast.success("successfully subcategory deleted");
       })
       .catch((err) => {
         console.log(err);

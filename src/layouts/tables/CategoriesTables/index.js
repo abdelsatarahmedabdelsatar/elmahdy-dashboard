@@ -17,6 +17,7 @@ import MDSpinner from "components/MDSpinner/MDSpinner";
 import CategoryModel from "layouts/popUpMpdels/CategoryModel";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import axiosInstance from "axiosConfig/instance";
+import { toast } from "sonner";
 
 const CategoriesTables = () => {
   const [data, setData] = useState([]);
@@ -65,7 +66,6 @@ const CategoriesTables = () => {
       })
       .then((res) => {
         setData(res.data.data.data);
-        console.log(res.data.data.data);
         setLoader(false);
       })
       .catch((err) => {
@@ -88,6 +88,7 @@ const CategoriesTables = () => {
       .then(() => {
         setRefresh(!refresh);
         handleConfirmDeleteClose();
+        toast.success("successfully category deleted");
       })
       .catch((err) => {
         console.log(err);

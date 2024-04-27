@@ -14,6 +14,7 @@ import ImageUpload from "components/MDImageUpload";
 import MDSpinner from "components/MDSpinner/MDSpinner";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
+import { toast } from "sonner";
 
 const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
   const [username, setUsername] = useState(
@@ -77,10 +78,11 @@ const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
           onClose();
           setRefresh(!refresh);
           cleanUp();
+          toast.success("successfully user edited");
         })
         .catch((err) => {
           serLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     } else {
       axiosInstance
@@ -109,10 +111,11 @@ const UserModel = ({ open, onClose, refresh, setRefresh, editedUser }) => {
           onClose();
           setRefresh(!refresh);
           cleanUp();
+          toast.success("successfully user added");
         })
         .catch((err) => {
           serLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     }
   };

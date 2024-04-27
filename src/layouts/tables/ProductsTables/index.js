@@ -19,6 +19,7 @@ import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import axiosInstance from "axiosConfig/instance";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { toast } from "sonner";
 
 const ProductsTables = () => {
   const [data, setData] = useState([]);
@@ -51,7 +52,6 @@ const ProductsTables = () => {
   };
 
   const handleproductOpen = (obj) => {
-    console.log(obj);
     setEditedProduct(obj);
     setProductOpen(true);
   };
@@ -67,7 +67,6 @@ const ProductsTables = () => {
       })
       .then((res) => {
         setData(res.data.data.data);
-        console.log(res.data.data.data);
         setLoader(false);
       })
       .catch((err) => {
@@ -90,6 +89,7 @@ const ProductsTables = () => {
       .then((res) => {
         setRefresh(!refresh);
         handleConfirmDeleteClose();
+        toast.success("successfully product deleted");
       })
       .catch((err) => {
         console.log(err);
@@ -125,8 +125,8 @@ const ProductsTables = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>{row.enTitle}</TableCell>
-                      <TableCell>{row.arTitle}</TableCell>
+                      <TableCell>{row.EnTitle}</TableCell>
+                      <TableCell>{row.ArTitle}</TableCell>
                       <TableCell>{row.price}</TableCell>
                       <TableCell
                         style={{

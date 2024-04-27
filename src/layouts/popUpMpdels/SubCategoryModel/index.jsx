@@ -17,6 +17,7 @@ import axiosInstance from "axiosConfig/instance";
 import InputLabel from "@mui/material/InputLabel";
 import MDSpinner from "components/MDSpinner/MDSpinner";
 import handleInputNameChange from "./../../../helpers/index";
+import { toast } from "sonner";
 
 const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategory }) => {
   const [arName, setArName] = useState(
@@ -84,10 +85,11 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
           onClose();
           setRefresh(!refresh);
           cleanUp();
+          toast.success("successfully edited");
         })
         .catch((err) => {
           setLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     } else {
       axiosInstance
@@ -110,10 +112,11 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
           setRefresh(!refresh);
           onClose();
           cleanUp();
+          toast.success("successfully added");
         })
         .catch((err) => {
           setLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     }
   };
@@ -166,7 +169,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
             >
               {categories.map((c) => (
                 <MenuItem key={c._id} value={c._id}>
-                  {c.name}
+                  {c.EnName}
                 </MenuItem>
               ))}
             </Select>

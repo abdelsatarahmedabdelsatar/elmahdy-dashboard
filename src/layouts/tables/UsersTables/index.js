@@ -17,6 +17,7 @@ import MDSpinner from "components/MDSpinner/MDSpinner";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import UserModel from "layouts/popUpMpdels/UserModel";
 import axiosInstance from "axiosConfig/instance";
+import { toast } from "sonner";
 
 const UsersTables = () => {
   const [data, setData] = useState([]);
@@ -81,6 +82,7 @@ const UsersTables = () => {
       .then((res) => {
         setRefresh(!refresh);
         handleConfirmDeleteClose();
+        toast.success("successfully user deleted");
       })
       .catch((err) => {
         console.log(err);

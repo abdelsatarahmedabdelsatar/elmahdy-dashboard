@@ -12,13 +12,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import ListItem from "@mui/material/ListItem";
 import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
 import {
   useMaterialUIController,
   setMiniSidenav,
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
+import { toast } from "sonner";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
@@ -42,7 +42,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     textColor = "inherit";
   }
 
-  const closeSidenav = () => setMiniSidenav(dispatch, true);
+  // const closeSidenav = () => setMiniSidenav(dispatch, true);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

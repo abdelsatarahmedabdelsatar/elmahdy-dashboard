@@ -34,7 +34,6 @@ function Basic() {
         })
         .then((res) => {
           setError("");
-          console.log(res.data);
           setSignInLoader(false);
           if (res.data.data.role == "Admin") {
             localStorage.setItem("token", res.data.data.token);
@@ -56,18 +55,19 @@ function Basic() {
       <Card>
         <MDBox
           variant="gradient"
-          bgColor="info"
+          bgColor="warning"
           borderRadius="lg"
-          coloredShadow="info"
+          coloredShadow="warning"
           mx={2}
           mt={-3}
           p={2}
           mb={1}
           textAlign="center"
         >
-          <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Elmahdy Dashboard
-          </MDTypography>
+          <img src="./logo_1.png" width={160} />
+          {/* <MDTypography variant="h4" fontWeight="medium" color="black" mt={1}>
+            elmahdy dashboard
+          </MDTypography> */}
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
@@ -119,11 +119,15 @@ function Basic() {
               <MDButton
                 disabled={signInLoader}
                 variant="gradient"
-                color="info"
+                color="warning"
                 fullWidth
                 onClick={handleSignIn}
               >
-                {signInLoader ? <MDSpinner color="white" /> : "sign in"}
+                {signInLoader ? (
+                  <MDSpinner color="black" />
+                ) : (
+                  <span style={{ color: "black" }}>sign in</span>
+                )}
               </MDButton>
             </MDBox>
             {/* <MDBox mt={3} mb={1} textAlign="center">

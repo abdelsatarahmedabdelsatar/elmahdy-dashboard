@@ -19,6 +19,7 @@ import MultiImageUpload from "components/MDMultiImageUpload";
 import MDSpinner from "components/MDSpinner/MDSpinner";
 import Icon from "@mui/material/Icon";
 import handleInputNameChange from "./../../../helpers/index";
+import { toast } from "sonner";
 
 const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => {
   const [enTitle, setEnTitle] = useState(
@@ -26,6 +27,12 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
   );
   const [arTitle, setArTitle] = useState(
     Object.keys(editedProduct).length != 0 ? editedProduct.ArTitle : ""
+  );
+  const [enDescription, setEnDescription] = useState(
+    Object.keys(editedProduct).length != 0 ? editedProduct.EnDescription : ""
+  );
+  const [arDescription, setArDescription] = useState(
+    Object.keys(editedProduct).length != 0 ? editedProduct.ArDescription : ""
   );
   const [image, setImage] = useState(null);
   const [multiImage, setMultiImage] = useState([]);
@@ -114,7 +121,8 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           {
             EnTitle: enTitle,
             ArTitle: arTitle,
-            description: description,
+            EnDescription: enDescription,
+            ArDescription: arDescription,
             quantity: quantity,
             sold: sold,
             price: price,
@@ -138,11 +146,11 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           setLoader(false);
           onClose();
           setRefresh(!refresh);
+          toast.success("successfully product edited");
         })
         .catch((err) => {
           setLoader(false);
-          console.log(err);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     } else {
       axiosInstance
@@ -151,7 +159,8 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           {
             EnTitle: enTitle,
             ArTitle: arTitle,
-            description: description,
+            EnDescription: enDescription,
+            ArDescription: arDescription,
             quantity: quantity,
             sold: sold,
             price: price,
@@ -175,17 +184,23 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           setLoader(false);
           setRefresh(!refresh);
           onClose();
+          toast.success("successfully product added");
         })
         .catch((err) => {
           setLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     }
   };
 
-  const handleChechLangAndChange = (ev, lng) => {
+  const handleChechTiltleLangAndChange = (ev, lng) => {
     if (lng == "ar") setArTitle(handleInputNameChange(ev, lng));
     else setEnTitle(handleInputNameChange(ev, lng));
+  };
+
+  const handleChechDescriptionLangAndChange = (ev, lng) => {
+    if (lng == "ar") setArDescription(handleInputNameChange(ev, lng));
+    else setEnDescription(handleInputNameChange(ev, lng));
   };
 
   return (
@@ -202,9 +217,6 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           <Grid item md={6} sm={6}>
             <MultiImageUpload setMultiImage={setMultiImage} />
           </Grid>
-          {/* <Grid item md={6} sm={6}>
-          <ImageUpload setImage={setImage} />
-        </Grid> */}
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               autoFocus
@@ -213,7 +225,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               type="text"
               fullWidth
               value={enTitle}
-              onChange={(eve) => handleChechLangAndChange(eve, "en")}
+              onChange={(eve) => handleChechTiltleLangAndChange(eve, "en")}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -224,7 +236,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               type="text"
               fullWidth
               value={arTitle}
-              onChange={(eve) => handleChechLangAndChange(eve, "ar")}
+              onChange={(eve) => handleChechTiltleLangAndChange(eve, "ar")}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -249,7 +261,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               onChange={(e) => setSold(e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={4}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               autoFocus
               margin="dense"
@@ -260,19 +272,30 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               onChange={(e) => setPrice(e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={4}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               autoFocus
               margin="dense"
-              label="description"
+              label="english description"
               type="text"
               fullWidth
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={enDescription}
+              onChange={(eve) => handleChechDescriptionLangAndChange(eve, "en")}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="arabic description"
+              type="text"
+              fullWidth
+              value={arDescription}
+              onChange={(eve) => handleChechDescriptionLangAndChange(eve, "ar")}
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} lg={4}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               autoFocus
               margin="dense"

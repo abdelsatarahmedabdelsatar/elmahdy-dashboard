@@ -11,9 +11,9 @@ import PropTypes from "prop-types";
 
 const ConfirmModal = ({ title, open, onClose, onConfirm }) => {
   const handleConfirmation = (eve) => {
-    onConfirm();
     eve.target.disabled = "true";
     eve.target.innerHTML = "...";
+    onConfirm();
   };
 
   return (

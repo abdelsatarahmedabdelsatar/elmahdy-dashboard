@@ -14,6 +14,7 @@ import ImageUpload from "components/MDImageUpload";
 import MDSpinner from "components/MDSpinner/MDSpinner";
 import handleInputNameChange from "./../../../helpers/index";
 import Grid from "@mui/material/Grid";
+import { toast } from "sonner";
 
 const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
   const [enName, setEnName] = useState(
@@ -53,10 +54,11 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
           setImage({});
           setEnName("");
           setArName("");
+          toast.success("successfully brand edited");
         })
         .catch((err) => {
           setLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     } else {
       axiosInstance
@@ -82,10 +84,11 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
           setImage({});
           setEnName("");
           setArName("");
+          toast.success("successfully brand added");
         })
         .catch((err) => {
           setLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     }
   };
@@ -102,7 +105,6 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
       </DialogTitle>
       <DialogContent>
         <ImageUpload setImage={setImage} imagePath={editedBrand?.image} />
-
         <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={1.5}>
           <Grid item xs={12} sm={6} md={4} lg={6}>
             <TextField

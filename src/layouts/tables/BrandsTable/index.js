@@ -88,6 +88,7 @@ const BrandsTable = () => {
       .then((res) => {
         setRefresh(!refresh);
         handleConfirmDeleteClose();
+        toast.success("successfully brand deleted");
       })
       .catch((err) => {
         console.log(err);

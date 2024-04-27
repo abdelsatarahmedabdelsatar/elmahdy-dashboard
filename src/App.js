@@ -12,6 +12,7 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 import SignIn from "layouts/authentication/sign-in";
+import { Toaster } from "sonner";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -101,6 +102,7 @@ export default function App() {
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       {localStorage.getItem("token") ? (
         <>
+          <Toaster richColors className="toaster" expand position="top-center" offset={5} />
           <CssBaseline />
           {layout === "dashboard" && (
             <>

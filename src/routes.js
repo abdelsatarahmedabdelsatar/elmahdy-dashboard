@@ -1,6 +1,4 @@
 import Dashboard from "layouts/dashboard";
-import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
 import Icon from "@mui/material/Icon";
 import ProductsTables from "./layouts/tables/ProductsTables/index";
 import CategoriesTables from "./layouts/tables/CategoriesTables/index";

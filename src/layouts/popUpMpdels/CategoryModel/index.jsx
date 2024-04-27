@@ -14,6 +14,7 @@ import MDSpinner from "components/MDSpinner/MDSpinner";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import handleInputNameChange from "./../../../helpers/index";
+import { toast } from "sonner";
 
 const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) => {
   const [arName, setArName] = useState(
@@ -52,10 +53,11 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
           setImage({});
           setEnName("");
           setArName("");
+          toast.success("successfully category edited");
         })
         .catch((err) => {
           setLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     } else {
       axiosInstance
@@ -81,10 +83,11 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
           setImage({});
           setEnName("");
           setArName("");
+          toast.success("successfully category added");
         })
         .catch((err) => {
           setLoader(false);
-          setError(err.response.data.errors[0].msg);
+          toast.error(err.response.data.errors[0].msg);
         });
     }
   };
@@ -101,7 +104,6 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
       </DialogTitle>
       <DialogContent>
         <ImageUpload setImage={setImage} imagePath={editedCategory?.image} />
-
         <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={1.5}>
           <Grid item xs={12} sm={6} md={4} lg={6}>
             <TextField
