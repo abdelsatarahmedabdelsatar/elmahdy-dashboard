@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-const MultiImageUpload = ({ setMultiImage }) => {
+const MultiImageUpload = ({ setMultiImage ,imgsLength }) => {
   const [imagesLength, setImagesLength] = useState(0);
   useEffect(() => {
     return () => {
@@ -10,8 +10,11 @@ const MultiImageUpload = ({ setMultiImage }) => {
   }, []);
 
   const handleImageChange = (e) => {
-    setMultiImage(e.target.files);
-    setImagesLength(e.target.files.length);
+    let ListOfImages = e.target.files;
+    console.log(ListOfImages);
+    setMultiImage(ListOfImages);
+    console.log(ListOfImages);
+    setImagesLength(ListOfImages.length);
   };
 
   let selectFileFrontCover = () => {
@@ -44,7 +47,7 @@ const MultiImageUpload = ({ setMultiImage }) => {
         >
           <p style={{ color: "#2d3" }}>{imagesLength} images</p>
         </div>
-      ) : (
+      ) : !imgsLength?(
         <img
           onClick={selectFileFrontCover}
           style={{
@@ -58,6 +61,22 @@ const MultiImageUpload = ({ setMultiImage }) => {
           }}
           src={"./images_upload.png"}
         />
+      ):(
+        <div
+          style={{
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%",
+            border: "2px dashed #45D",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#EFE",
+          }}
+          onClick={selectFileFrontCover}
+        >
+          <p style={{ color: "#2d3" }}>{imgsLength} images</p>
+        </div>
       )}
     </div>
   );
@@ -65,10 +84,12 @@ const MultiImageUpload = ({ setMultiImage }) => {
 
 MultiImageUpload.defaultProps = {
   setMultiImage: undefined,
+  imgsLength: 0,
 };
 
 MultiImageUpload.propTypes = {
   setMultiImage: PropTypes.func,
+  imgsLength: PropTypes.number,
 };
 
 export default MultiImageUpload;

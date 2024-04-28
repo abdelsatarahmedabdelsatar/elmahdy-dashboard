@@ -21,7 +21,6 @@ export default function App() {
     direction,
     layout,
     openConfigurator,
-    sidenavColor,
     transparentSidenav,
     whiteSidenav,
     darkMode,
@@ -107,7 +106,6 @@ export default function App() {
           {layout === "dashboard" && (
             <>
               <Sidenav
-                color={sidenavColor}
                 brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
                 brandName="ElMahdy"
                 routes={routes}

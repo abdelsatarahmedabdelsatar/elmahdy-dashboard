@@ -25,29 +25,19 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
-  const [ConfirmLogoutopen, setConfirmLogoutOpen] = useState(false);
 
   let textColor = "white";
 
-  const handleConfirmLogoutOpen = () => {
-    setConfirmLogoutOpen(true);
+  const handleConfirmLogout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
   };
 
-  const handleConfirmLogoutClose = () => {
-    setConfirmLogoutOpen(false);
-  };
   if (transparentSidenav || (whiteSidenav && !darkMode)) {
     textColor = "dark";
   } else if (whiteSidenav && darkMode) {
     textColor = "inherit";
   }
-
-  // const closeSidenav = () => setMiniSidenav(dispatch, true);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
-  };
 
   useEffect(() => {
     function handleMiniSidenav() {
@@ -138,20 +128,20 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       />
       <List>{renderRoutes}</List>
       <div>
-        <ConfirmModel
+        {/* <ConfirmModel
           title={"sure to logout ?"}
           open={ConfirmLogoutopen}
           onClose={handleConfirmLogoutClose}
           onConfirm={handleLogout}
-        />
+        /> */}
       </div>
-      <MDBox p={2} mt="auto" style={{ cursor: "pointer" }} onClick={handleConfirmLogoutOpen}>
+      <MDBox p={2} mt="auto" style={{ cursor: "pointer" }} onClick={handleConfirmLogout}>
         <ListItem>
           <Avatar
             src={`https://elmahdy.onrender.com/${localStorage.getItem("img")}`}
             alt="admin image"
           />
-          <p style={{ marginLeft: "7px", marginRight: "15px", color: "white", fontSize: "16px" }}>
+          <p style={{ marginLeft: "7px", marginRight: "10px", color: "white", fontSize: "16px" }}>
             {localStorage.getItem("fullName")}
           </p>
           <LogoutIcon style={{ paddnigTop: "20px" }} color="white" />

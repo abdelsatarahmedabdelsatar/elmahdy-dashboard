@@ -34,12 +34,11 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
   const cleanUp = () => {
     setEnName("");
     setArName("");
-    setCategories([]);
     setCategoryId("");
   };
   useEffect(() => {
     axiosInstance
-      .get("api/v1/category", {
+      .get("api/v1/category?limit=1000000", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -47,10 +46,6 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
       .then((res) => {
         setCategories(res.data.data.data);
       });
-
-    return () => {
-      cleanUp();
-    };
   }, []);
 
   const handleCategoryChange = (e) => {

@@ -80,27 +80,7 @@ function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
-  // const handleCloseMenu = () => setOpenMenu(false);
-
-  // const renderMenu = () => (
-  //   <Menu
-  //     anchorEl={openMenu}
-  //     anchorReference={null}
-  //     anchorOrigin={{
-  //       vertical: "bottom",
-  //       horizontal: "left",
-  //     }}
-  //     open={Boolean(openMenu)}
-  //     onClose={handleCloseMenu}
-  //     sx={{ mt: 2 }}
-  //   >
-  //     <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-  //     <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
-  //     <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
-  //   </Menu>
-  // );
-
-  const ButtonStyle = { backgroundColor: "#23F", color: "#FFF" };
+  const ButtonStyle = { backgroundColor: "#ffcc1b", color: "#000" };
 
   return (
     <AppBar

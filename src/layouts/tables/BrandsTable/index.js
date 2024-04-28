@@ -17,6 +17,7 @@ import MDSpinner from "components/MDSpinner/MDSpinner";
 import BrandsModel from "layouts/popUpMpdels/BrandModel";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import axiosInstance from "axiosConfig/instance";
+import { toast } from 'sonner';
 
 const BrandsTable = () => {
   const [data, setData] = useState([]);
@@ -50,7 +51,7 @@ const BrandsTable = () => {
   };
   useEffect(() => {
     axiosInstance
-      .get("api/v1/brand", {
+      .get("api/v1/brand?limit=1000000", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

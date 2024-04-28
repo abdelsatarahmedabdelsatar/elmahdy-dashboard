@@ -59,7 +59,7 @@ const SubCategoriesTables = () => {
 
   useEffect(() => {
     axiosInstance
-      .get("api/v1/subCategory", {
+      .get("api/v1/subCategory?limit=1000000", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -121,7 +121,7 @@ const SubCategoriesTables = () => {
                     <TableRow key={index}>
                       <TableCell>{row.EnName}</TableCell>
                       <TableCell>{row.ArName}</TableCell>
-                      <TableCell>{row.category?.name}</TableCell>
+                      <TableCell>{row.category?.EnName}</TableCell>
                       <TableCell>{row.createdAt.split("T")[0]}</TableCell>
 
                       <TableCell>

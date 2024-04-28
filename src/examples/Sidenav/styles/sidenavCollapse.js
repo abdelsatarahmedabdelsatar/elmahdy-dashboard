@@ -1,20 +1,6 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 function collapseItem(theme, ownerState) {
   const { palette, transitions, breakpoints, boxShadows, borders, functions } = theme;
-  const { active, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = ownerState;
+  const { active, transparentSidenav, whiteSidenav, darkMode } = ownerState;
 
   const { white, transparent, dark, grey, gradients } = palette;
   const { md } = boxShadows;
@@ -23,7 +9,7 @@ function collapseItem(theme, ownerState) {
 
   return {
     background: active
-      ? linearGradient(gradients[sidenavColor].main, gradients[sidenavColor].state)
+      ? linearGradient(gradients["warning"].main, gradients["warning"].state)
       : transparent.main,
     color:
       (transparentSidenav && !darkMode && !active) || (whiteSidenav && !active)
@@ -48,16 +34,7 @@ function collapseItem(theme, ownerState) {
 
     "&:hover, &:focus": {
       backgroundColor: () => {
-        let backgroundValue;
-
-        if (!active) {
-          backgroundValue =
-            transparentSidenav && !darkMode
-              ? grey[300]
-              : rgba(whiteSidenav ? grey[400] : white.main, 0.2);
-        }
-
-        return backgroundValue;
+        return "#555";
       },
     },
   };

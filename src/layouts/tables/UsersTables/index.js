@@ -58,7 +58,7 @@ const UsersTables = () => {
   };
   useEffect(() => {
     axiosInstance
-      .get("api/v1/users", {
+      .get("api/v1/users?limit=1000000", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

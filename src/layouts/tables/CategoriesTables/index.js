@@ -59,7 +59,7 @@ const CategoriesTables = () => {
 
   useEffect(() => {
     axiosInstance
-      .get("api/v1/category", {
+      .get("api/v1/category?limit=1000000", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

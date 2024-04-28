@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 const ConfirmModal = ({ title, open, onClose, onConfirm }) => {
   const handleConfirmation = (eve) => {
     eve.target.disabled = "true";
-    eve.target.innerHTML = "...";
+    eve.target.innerHTML = "... deleteing";
     onConfirm();
   };
 

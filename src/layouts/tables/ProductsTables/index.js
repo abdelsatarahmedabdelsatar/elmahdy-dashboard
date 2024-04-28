@@ -17,8 +17,6 @@ import MDSpinner from "components/MDSpinner/MDSpinner";
 import ProductModel from "layouts/popUpMpdels/ProductModel";
 import ConfirmModel from "layouts/popUpMpdels/ConfirmModel";
 import axiosInstance from "axiosConfig/instance";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { toast } from "sonner";
 
 const ProductsTables = () => {
@@ -60,23 +58,20 @@ const ProductsTables = () => {
   };
   useEffect(() => {
     axiosInstance
-      .get("api/v1/product", {
+      .get("api/v1/product?limit=1000000", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((res) => {
         setData(res.data.data.data);
+        console.log(res.data.data.data);
         setLoader(false);
       })
       .catch((err) => {
         setLoader(false);
         console.log(err);
       });
-    return () => {
-      setLoader(false);
-      setData([]);
-    };
   }, [refresh]);
 
   const handleProductDelete = (id) => {
@@ -108,10 +103,10 @@ const ProductsTables = () => {
             <Table>
               <thead style={{ display: "table-header-group", color: "#FFF" }}>
                 <tr style={{ backgroundColor: "#444" }}>
-                  <TableCell>en name</TableCell>
-                  <TableCell>ar name</TableCell>
+                  <TableCell>image</TableCell>
+                  <TableCell>name</TableCell>
                   <TableCell>price</TableCell>
-                  <TableCell>price after dicount</TableCell>
+                  <TableCell>after discount</TableCell>
                   <TableCell>category</TableCell>
                   <TableCell>sub category</TableCell>
                   <TableCell>sold</TableCell>
@@ -125,33 +120,26 @@ const ProductsTables = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index}>
+                      <TableCell> <img
+                          width={30}
+                          height={30}
+                          src={`https://elmahdy.onrender.com/${row.image}`}
+                        /></TableCell>
                       <TableCell>{row.EnTitle}</TableCell>
-                      <TableCell>{row.ArTitle}</TableCell>
-                      <TableCell>{row.price}</TableCell>
                       <TableCell
                         style={{
                           textDecoration: row.priceAfterDiscount ? "line-through" : "",
                         }}
                       >
+                        {row.price ? row.price : "_____"}
+                      </TableCell>
+                      <TableCell>
                         {row.priceAfterDiscount ? row.priceAfterDiscount : "_____"}
                       </TableCell>
-                      <TableCell>{row.category?.name}</TableCell>
-                      <TableCell>
-                        {row.subcategories.length ? (
-                          <>
-                            show
-                            <Select style={{ marginLeft: "6px" }}>
-                              {row.subcategories.map((c, i) => (
-                                <MenuItem key={i}>{c.name}</MenuItem>
-                              ))}
-                            </Select>
-                          </>
-                        ) : (
-                          "_____"
-                        )}
-                      </TableCell>
+                      <TableCell>{row.category ? row.category.EnName : ""}</TableCell>
+                      <TableCell>{row.subCategory ? row.subCategory.EnName : ""}</TableCell>
                       <TableCell>{row.sold}</TableCell>
-                      <TableCell>{row.brand?.name ? row.brand?.name : "_____"}</TableCell>
+                      <TableCell>{row.brand?.EnName ? row.brand?.EnName : "_____"}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
                         <Icon onClick={() => handleproductOpen(row)} style={{ cursor: "pointer" }}>

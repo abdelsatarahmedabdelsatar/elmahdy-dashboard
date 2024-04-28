@@ -17,7 +17,6 @@ function BasicLayout({ children }) {
   );
 }
 
-// Typechecking props for the BasicLayout
 BasicLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
