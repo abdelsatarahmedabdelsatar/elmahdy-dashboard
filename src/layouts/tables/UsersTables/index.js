@@ -68,6 +68,10 @@ const UsersTables = () => {
         setLoader(false);
       })
       .catch((err) => {
+        if (err.respone.data.message.includes("please login again")) {
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
         setLoader(false);
       });
   }, [refresh]);

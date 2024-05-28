@@ -5,6 +5,7 @@ import CategoriesTables from "./layouts/tables/CategoriesTables/index";
 import BrandsTable from "./layouts/tables/BrandsTable/index";
 import UsersTables from "./layouts/tables/UsersTables/index";
 import SubCategoriesTables from "layouts/tables/SubCategoriesTables";
+import Settings from './layouts/settings/settings';
 
 const routes = [
   {
@@ -54,6 +55,14 @@ const routes = [
     icon: <Icon fontSize="small">interests</Icon>,
     route: "/brands",
     component: <BrandsTable />,
+  },
+  {
+    type: "collapse",
+    name: "settings",
+    key: "settings",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/settings",
+    component: <Settings />,
   },
   // {
   //   type: "collapse",

@@ -33,19 +33,19 @@ const MultiImageUpload = ({ setMultiImage ,imgsLength }) => {
 
       {imagesLength ? (
         <div
-          style={{
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
-            border: "2px dashed #45D",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#EFE",
-          }}
+        style={{
+          width: "100px",
+          height: "100px",
+          borderRadius: "50%",
+          border: "1px solid #45D",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#EFEFEF",
+        }}
           onClick={selectFileFrontCover}
         >
-          <p style={{ color: "#2d3" }}>{imagesLength} images</p>
+          <p style={{ color: "#333" ,fontSize:"17px"}}>{imagesLength} images</p>
         </div>
       ) : !imgsLength?(
         <img
@@ -67,15 +67,15 @@ const MultiImageUpload = ({ setMultiImage ,imgsLength }) => {
             width: "100px",
             height: "100px",
             borderRadius: "50%",
-            border: "2px dashed #45D",
+            border: "1px solid #45D",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#EFE",
+            backgroundColor: "#EFEFEF",
           }}
           onClick={selectFileFrontCover}
         >
-          <p style={{ color: "#2d3" }}>{imgsLength} images</p>
+          <p style={{ color: "#333" ,fontSize:"17px"}}>{imgsLength} images</p>
         </div>
       )}
     </div>

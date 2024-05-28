@@ -57,6 +57,10 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
           toast.success("successfully brand edited");
         })
         .catch((err) => {
+            if(err.response.data.message.includes("please login again")){
+              localStorage.removeItem("token");
+              window.location.reload();
+            }
           setLoader(false);
           toast.error(err.response.data.errors[0].msg);
         });

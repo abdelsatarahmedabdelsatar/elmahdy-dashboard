@@ -25,6 +25,11 @@ function Dashboard() {
       })
       .then((res) => {
         setUsers(res.data.data.data);
+      }).catch((err)=>{
+        if(err.response.data.message.includes("please login again")){
+          localStorage.removeItem("token");
+          window.location.reload();
+        }
       });
     axiosInstance
       .get("api/v1/category", {

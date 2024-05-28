@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -20,6 +21,10 @@ import handleInputNameChange from "./../../../helpers/index";
 import { toast } from "sonner";
 
 const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategory }) => {
+  
+  const [isMain, setIsMain] = useState(
+    Object.keys(editedSubCategory).length != 0 ? editedSubCategory.isMain : false
+  );
   const [arName, setArName] = useState(
     Object.keys(editedSubCategory).length != 0 ? editedSubCategory.ArName : ""
   );
@@ -67,6 +72,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
             EnName: enName,
             ArName: arName,
             category: categoryId,
+            isMain:isMain
           },
           {
             headers: {
@@ -94,6 +100,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
             EnName: enName,
             ArName: arName,
             category: categoryId,
+            isMain:isMain
           },
           {
             headers: {
@@ -170,6 +177,8 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
             </Select>
           </FormControl>
         </Grid>
+        <Checkbox checked={isMain} onChange={() => setIsMain(!isMain)} />
+          <span style={{ fontSize: "14px" }}>show in feed page</span>
       </DialogContent>
       <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
         {error}

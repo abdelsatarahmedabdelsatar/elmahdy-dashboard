@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,15 +18,21 @@ import handleInputNameChange from "./../../../helpers/index";
 import { toast } from "sonner";
 
 const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) => {
+  
+  const [isMain, setIsMain] = useState(
+    Object.keys(editedCategory).length != 0 ? editedCategory.isMain : false
+  );
   const [arName, setArName] = useState(
     Object.keys(editedCategory).length != 0 ? editedCategory.ArName : ""
   );
   const [enName, setEnName] = useState(
     Object.keys(editedCategory).length != 0 ? editedCategory.EnName : ""
   );
+
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
+
 
   const handleAddCategory = () => {
     setLoader(true);
@@ -37,6 +44,7 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
             EnName: enName,
             ArName: arName,
             image: image,
+            isMain: isMain,
           },
           {
             headers: {
@@ -56,6 +64,10 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
           toast.success("successfully category edited");
         })
         .catch((err) => {
+            if(err.respone.data.message.includes("please login again")){
+              localStorage.removeItem("token");
+              window.location.reload();
+            }
           setLoader(false);
           toast.error(err.response.data.errors[0].msg);
         });
@@ -67,6 +79,7 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
             EnName: enName,
             ArName: arName,
             image: image,
+            isMain: isMain,
           },
           {
             headers: {
@@ -128,6 +141,9 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
             />
           </Grid>
         </Grid>
+
+          <Checkbox checked={isMain} onChange={() => setIsMain(!isMain)} />
+          <span style={{ fontSize: "14px" }}>show in feed page</span>
       </DialogContent>
       <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
         {error}

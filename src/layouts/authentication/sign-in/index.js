@@ -44,7 +44,11 @@ function Basic() {
             setError("you must ba an admin");
           }
         })
-        .catch(() => {
+        .catch((err) => {
+            if(err.response.data.message.includes("please login again")){
+              localStorage.removeItem("token");
+              window.location.reload();
+            }
           setSignInLoader(false);
           setError("error in email or password");
         });
