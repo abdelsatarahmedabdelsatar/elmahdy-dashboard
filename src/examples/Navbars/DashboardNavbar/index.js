@@ -15,6 +15,7 @@ import SubCategoryModel from "layouts/popUpMpdels/SubCategoryModel";
 
 import { useMaterialUIController, setTransparentNavbar } from "context";
 import Icon from "@mui/material/Icon";
+import OptionsModel from "layouts/popUpMpdels/OptionsModel";
 
 function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
   const [navbarType, setNavbarType] = useState();
@@ -24,6 +25,7 @@ function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
 
   const [userOpen, setUserOpen] = useState(false);
   const [productOpen, setProductOpen] = useState(false);
+  const [optionsOpen, setOptionsOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [subcategoryOpen, setSubCategoryOpen] = useState(false);
   const [brandOpen, setBrandOpen] = useState(false);
@@ -31,35 +33,54 @@ function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
   const handleUserOpen = () => {
     setUserOpen(true);
   };
-  const handleUserClose = () => {
+  const handleUserClose = (eve,reason) => {
+    if (reason && reason === "backdropClick") 
+    return;
     setUserOpen(false);
   };
 
   const handleProductOpen = () => {
     setProductOpen(true);
   };
-  const handleProductClose = () => {
+  const handleProductClose = (eve, reason) => {
+    if (reason && reason === "backdropClick") 
+    return;
     setProductOpen(false);
+  };
+
+  const handleOptionsOpen = () => {
+    setOptionsOpen(true);
+  };
+  const handleOptionsClose = (eve, reason) => {
+    if (reason && reason === "backdropClick") 
+        return;
+    setOptionsOpen(false);
   };
 
   const handleCategoryOpen = () => {
     setCategoryOpen(true);
   };
-  const handleCategoryClose = () => {
+  const handleCategoryClose = (eve, reason) => {
+    if (reason && reason === "backdropClick") 
+    return;
     setCategoryOpen(false);
   };
 
   const handleSubCategoryOpen = () => {
     setSubCategoryOpen(true);
   };
-  const handleSubCategoryClose = () => {
+  const handleSubCategoryClose = (eve, reason) => {
+    if (reason && reason === "backdropClick") 
+    return;
     setSubCategoryOpen(false);
   };
 
   const handleBrandOpen = () => {
     setBrandOpen(true);
   };
-  const handleBrandClose = () => {
+  const handleBrandClose = (eve, reason) => {
+    if (reason && reason === "backdropClick") 
+    return;
     setBrandOpen(false);
   };
 
@@ -112,7 +133,11 @@ function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
           <MDButton style={{ ...ButtonStyle }} onClick={handleSubCategoryOpen}>
             <Icon style={{ marginRight: "10px" }}>add</Icon> add sub category
           </MDButton>
-        ) : (
+        ) :route == "product-options" ? (
+          <MDButton style={{ ...ButtonStyle }} onClick={handleOptionsOpen}>
+            <Icon style={{ marginRight: "10px" }}>add</Icon> add option
+          </MDButton>
+        ) :(
           ""
         )}
       </Toolbar>
@@ -139,6 +164,12 @@ function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
         setRefresh={setRefresh}
         open={productOpen}
         onClose={handleProductClose}
+      />
+       <OptionsModel
+        refresh={refresh}
+        setRefresh={setRefresh}
+        open={optionsOpen}
+        onClose={handleOptionsClose}
       />
       <UserModel
         refresh={refresh}

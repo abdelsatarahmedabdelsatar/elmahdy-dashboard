@@ -69,7 +69,7 @@ const ProductsTables = () => {
         setLoader(false);
       })
       .catch((err) => {
-          if(err.respone.data.message.includes("please login again")){
+          if(err.response.data.message.includes("please login again")){
             localStorage.removeItem("token");
             window.location.reload();
           }

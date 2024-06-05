@@ -138,7 +138,10 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
         {error}
       </p>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={()=>{
+          cleanUP();
+          onClose();
+        }} color="primary">
           Cancel
         </Button>
         <Button

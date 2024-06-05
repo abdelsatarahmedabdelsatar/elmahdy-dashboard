@@ -6,6 +6,7 @@ import BrandsTable from "./layouts/tables/BrandsTable/index";
 import UsersTables from "./layouts/tables/UsersTables/index";
 import SubCategoriesTables from "layouts/tables/SubCategoriesTables";
 import Settings from './layouts/settings/settings';
+import OptionsTables from "layouts/tables/OptionsTables";
 
 const routes = [
   {
@@ -31,6 +32,14 @@ const routes = [
     icon: <Icon fontSize="small">reorder</Icon>,
     route: "/products",
     component: <ProductsTables />,
+  },
+  {
+    type: "collapse",
+    name: "product options",
+    key: "product_options",
+    icon: <Icon fontSize="small">O</Icon>,
+    route: "/product-options",
+    component: <OptionsTables />,
   },
   {
     type: "collapse",

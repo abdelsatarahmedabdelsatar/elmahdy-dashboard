@@ -64,7 +64,7 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
           toast.success("successfully category edited");
         })
         .catch((err) => {
-            if(err.respone.data.message.includes("please login again")){
+            if(err.response.data.message.includes("please login again")){
               localStorage.removeItem("token");
               window.location.reload();
             }
@@ -149,7 +149,10 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
         {error}
       </p>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={()=>{
+          cleanUP();
+          onClose();
+        }} color="primary">
           Cancel
         </Button>
         <Button
