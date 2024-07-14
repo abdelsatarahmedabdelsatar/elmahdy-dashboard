@@ -111,7 +111,6 @@ const OptionsTables = () => {
                   <TableCell>name</TableCell>
                   <TableCell>title</TableCell>
                   <TableCell>type</TableCell>
-                  <TableCell>money added</TableCell>
                   <TableCell>actions</TableCell>
 
                 </tr>
@@ -121,10 +120,9 @@ const OptionsTables = () => {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <TableRow key={index} >
-                      <TableCell>{row.EnName}</TableCell>
+                      <TableCell style={{color:"#101010",fontSize:"16px",fontWeight:"bold"}}>{row.EnName}</TableCell>
                       <TableCell>{row.EnTitle}</TableCell>
-                      <TableCell>{row.type}</TableCell>
-                      <TableCell>{row.moreMoney}</TableCell>
+                      <TableCell style={{color:"#37B7C3",fontSize:"16px",fontWeight:"revert"}}>{row.type}</TableCell>
                       
                       <TableCell>
                         <Icon onClick={() => handleproductOpen(row)} style={{ cursor: "pointer" }}>

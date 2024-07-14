@@ -21,18 +21,12 @@ import handleInputNameChange from "./../../../helpers/index";
 import { toast } from "sonner";
 
 const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategory }) => {
-  
-  const [isMain, setIsMain] = useState(
-    Object.keys(editedSubCategory).length != 0 ? editedSubCategory.isMain : false
-  );
-  const [arName, setArName] = useState(
-    Object.keys(editedSubCategory).length != 0 ? editedSubCategory.ArName : ""
-  );
-  const [enName, setEnName] = useState(
-    Object.keys(editedSubCategory).length != 0 ? editedSubCategory.EnName : ""
-  );
+  let edited_flag = Object.keys(editedSubCategory).length != 0;
+  const [isMain, setIsMain] = useState(edited_flag ? editedSubCategory.isMain : false);
+  const [arName, setArName] = useState(edited_flag ? editedSubCategory.ArName : "");
+  const [enName, setEnName] = useState(edited_flag ? editedSubCategory.EnName : "");
   const [categories, setCategories] = useState([]);
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState(edited_flag ? editedSubCategory.category._id : "");
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
 
@@ -64,7 +58,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
 
   const handleAddSubCategory = () => {
     setLoader(true);
-    if (Object.keys(editedSubCategory).length != 0) {
+    if (edited_flag) {
       axiosInstance
         .put(
           "api/v1/subCategory/" + editedSubCategory._id,
@@ -72,7 +66,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
             EnName: enName,
             ArName: arName,
             category: categoryId,
-            isMain:isMain
+            isMain: isMain,
           },
           {
             headers: {
@@ -100,7 +94,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
             EnName: enName,
             ArName: arName,
             category: categoryId,
-            isMain:isMain
+            isMain: isMain,
           },
           {
             headers: {
@@ -125,9 +119,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
 
   return (
     <Dialog fullWidth open={open} onClose={onClose}>
-      <DialogTitle>
-        {Object.keys(editedSubCategory).length != 0 ? "edit sub category" : "add new sub category"}
-      </DialogTitle>
+      <DialogTitle>{edited_flag ? "edit sub category" : "add new sub category"}</DialogTitle>
       <DialogContent>
         <Grid container alignItems="center" justifyContent="space-evenly" columnSpacing={1.5}>
           <Grid item xs={12} sm={6} md={4} lg={6}>
@@ -178,7 +170,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
           </FormControl>
         </Grid>
         <Checkbox checked={isMain} onChange={() => setIsMain(!isMain)} />
-          <span style={{ fontSize: "14px" }}>show in feed page</span>
+        <span style={{ fontSize: "14px" }}>show in feed page</span>
       </DialogContent>
       <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
         {error}
@@ -194,7 +186,7 @@ const SubCategoryModel = ({ open, onClose, refresh, setRefresh, editedSubCategor
         >
           {loader ? (
             <MDSpinner color="white" />
-          ) : Object.keys(editedSubCategory).length != 0 ? (
+          ) : edited_flag ? (
             <>
               <Icon style={{ marginRight: "8px" }}>modeEdit</Icon>
               edit sub category

@@ -58,6 +58,7 @@ function DashboardNavbar({ absolute, light, isMini, refresh, setRefresh }) {
   };
 
   const handleCategoryOpen = () => {
+    
     setCategoryOpen(true);
   };
   const handleCategoryClose = (eve, reason) => {

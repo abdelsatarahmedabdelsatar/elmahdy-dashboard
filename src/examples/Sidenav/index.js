@@ -22,6 +22,7 @@ import { toast } from "sonner";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
+  const [ConfirmLogout, setConfirmLogout] = useState(false);
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
@@ -38,6 +39,18 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   } else if (whiteSidenav && darkMode) {
     textColor = "inherit";
   }
+
+
+  const handleModelOpen = () => {
+
+    setConfirmLogout(true);
+    
+  }
+  const handleModelCLose = () => {
+        setConfirmLogout(false);
+  }
+
+
 
   useEffect(() => {
     function handleMiniSidenav() {
@@ -135,7 +148,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           onConfirm={handleLogout}
         /> */}
       </div>
-      <MDBox p={2} mt="auto" style={{ cursor: "pointer" }} onClick={handleConfirmLogout}>
+      <MDBox p={2} mt="auto" style={{ cursor: "pointer" }} onClick={handleModelOpen}>
         <ListItem>
           <Avatar
             src={`https://elmahdy.onrender.com/${localStorage.getItem("img")}`}
@@ -147,6 +160,15 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           <LogoutIcon style={{ paddnigTop: "20px" }} color="white" />
         </ListItem>
       </MDBox>
+
+      <div>
+        <ConfirmModel
+          title={`are you sure to logout ?`}
+          open={ConfirmLogout}
+          onClose={handleModelCLose}
+          onConfirm={handleConfirmLogout}
+        />
+      </div>
     </SidenavRoot>
   );
 }

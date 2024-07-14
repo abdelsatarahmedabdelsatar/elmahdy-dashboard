@@ -22,57 +22,79 @@ import handleInputNameChange from "./../../../helpers/index";
 import { toast } from "sonner";
 
 const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => {
-  const [enTitle, setEnTitle] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.EnTitle : ""
-  );
-  const [arTitle, setArTitle] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.ArTitle : ""
-  );
+  let edited_flag = Object.keys(editedProduct).length != 0;
+
+  const [enTitle, setEnTitle] = useState(edited_flag ? editedProduct.EnTitle : "");
+  const [arTitle, setArTitle] = useState(edited_flag ? editedProduct.ArTitle : "");
   const [enDescription, setEnDescription] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.EnDescription : ""
+    edited_flag ? editedProduct.EnDescription : ""
   );
   const [arDescription, setArDescription] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.ArDescription : ""
+    edited_flag ? editedProduct.ArDescription : ""
   );
   const [image, setImage] = useState(null);
   const [multiImage, setMultiImage] = useState([]);
-  const [quantity, setQuantity] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.quantity : ""
+  const [quantity, setQuantity] = useState(edited_flag ? editedProduct.quantity : "");
+  const [optionsValue, setOptionsValue] = useState(
+    edited_flag ? editedProduct.options.map((p) => p._id) : []
   );
-  const [sold, setSold] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.sold : ""
-  );
-  const [price, setPrice] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.price : ""
-  );
+  const [sold, setSold] = useState(edited_flag ? editedProduct.sold : "");
+  const [price, setPrice] = useState(edited_flag ? editedProduct.price : "");
   const [priceAfterDicount, setPriceAfterDicount] = useState(
-    Object.keys(editedProduct).length != 0 ? editedProduct.priceAfterDiscount : ""
+    edited_flag ? editedProduct.priceAfterDiscount : ""
   );
 
-  const [color, setColor] = useState([]);
+  const [color, setColor] = useState(edited_flag ? editedProduct.colors : []);
   const [brands, setBrands] = useState([]);
-  const [brand, setBrand] = useState("");
+  const [brand, setBrand] = useState(edited_flag ? editedProduct.brand._id : "");
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(edited_flag ? editedProduct.category._id : "");
   const [subCategories, setSubCategories] = useState([]);
   const [filteredSubCategories, setfilteredSubCategories] = useState([]);
-  const [subCategory, setSubCategory] = useState("");
-
+  const [subCategory, setSubCategory] = useState(edited_flag ? editedProduct.subCategory._id : "");
+  const [options, setOptions] = useState([]);
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
-  
+
   const cleanUp = () => {
-    setColor([])
-    setBrands([])
-    setBrand("")
-    setCategories([])
-    setCategory("")
-    setSubCategories([])
-    setfilteredSubCategories([])
-    setSubCategory("")
-    setError("")
-    setLoader(false)
-  }
+    setEnTitle("");
+    setArTitle("");
+    setEnDescription("");
+    setArDescription("");
+    setImage({});
+    setMultiImage([]);
+    setOptionsValue([]);
+    setQuantity("");
+    setSold("");
+    setPrice("");
+    setPriceAfterDicount("");
+    setColor([]);
+    // setBrands([]);
+    setBrand("");
+    // setCategories([]);
+    setCategory("");
+    // setSubCategories([]);
+    // setfilteredSubCategories([]);
+    setSubCategory("");
+    setError("");
+    setLoader(false);
+  };
+
+  useEffect(() => {
+    if (edited_flag) {
+      axiosInstance
+        .get("api/v1/subCategory?limit=1000000", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          setfilteredSubCategories(
+            res.data.data.data.filter((f) => f.category.EnName == editedProduct.category.EnName)
+          );
+        });
+    }
+  }, []);
 
   useEffect(() => {
     axiosInstance
@@ -103,10 +125,27 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
       .then((res) => {
         setBrands(res.data.data.data);
       });
+
+    axiosInstance
+      .get("api/v1/option", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setOptions(res.data.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleColorChange = (event) => {
     setColor(event.target.value);
+  };
+
+  const handleOptionsChange = (event) => {
+    setOptionsValue(event.target.value);
   };
 
   const handleCategoryChange = (event) => {
@@ -123,7 +162,11 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
     setBrand(event.target.value);
   };
   const handleAddProduct = () => {
-    const formData = new FormData();
+
+    if(sold > quantity){
+      toast.error("sold shoud be lower than quantity");
+    }else{
+          const formData = new FormData();
 
     formData.append("EnTitle", enTitle);
     formData.append("ArTitle", arTitle);
@@ -147,9 +190,14 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
       formData.append(`colors[${index}]`, str);
     });
 
+    optionsValue.forEach((str, index) => {
+      formData.append(`options[${index}]`, str);
+    });
+
     formData.append("category", category);
     formData.append("subCategory", subCategory);
     formData.append("brand", brand);
+
     setLoader(true);
     if (Object.keys(editedProduct).length != 0) {
       axiosInstance
@@ -159,8 +207,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           },
         })
         .then((res) => {
-          setError("");
-          setLoader(false);
+          cleanUp();
           onClose();
           setRefresh(!refresh);
           toast.success("successfully product edited");
@@ -178,9 +225,10 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           },
         })
         .then((res) => {
-          setRefresh(!refresh);
-          cleanUp()
+          cleanUp();
           onClose();
+          setRefresh(!refresh);
+          toast.success("successfully product added");
         })
         .catch((err) => {
           setLoader(false);
@@ -189,6 +237,9 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
           else toast.error("error occured");
         });
     }
+    }
+
+
   };
 
   const handleChechTiltleLangAndChange = (ev, lng) => {
@@ -213,7 +264,10 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
             <ImageUpload setImage={setImage} imagePath={editedProduct?.imageCover} />
           </Grid>
           <Grid item md={6} sm={6}>
-            <MultiImageUpload setMultiImage={setMultiImage} imgsLength = {editedProduct?.images?.length}/>
+            <MultiImageUpload
+              setMultiImage={setMultiImage}
+              imgsLength={editedProduct?.images?.length}
+            />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
@@ -305,19 +359,19 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
             />
           </Grid>
 
-          <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
+          <Grid item xs={12} style={{ marginTop: "10px" }} sm={6} md={6} lg={3}>
             <Grid container>
               <FormControl fullWidth>
                 <InputLabel
-                  id="demo-simple-select-label"
+                  id="demo-simple-select2-label"
                   style={{ paddingLeft: "3px", paddingRight: "3px", backgroundColor: "#FFF" }}
                 >
                   color
                 </InputLabel>
                 <Select
-                  style={{ height: "38px" }}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  style={{ height: "42px" }}
+                  labelId="demo-simple-select2-label"
+                  id="demo-simple-select2"
                   value={color}
                   onChange={handleColorChange}
                   multiple
@@ -333,7 +387,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               </FormControl>
             </Grid>
           </Grid>
-          <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
+          <Grid item xs={12} style={{ marginTop: "10px" }} sm={6} md={6} lg={3}>
             <Grid container>
               <FormControl fullWidth>
                 <InputLabel
@@ -341,7 +395,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
                 >
                   choose category
                 </InputLabel>
-                <Select style={{ height: "38px" }} value={category} onChange={handleCategoryChange}>
+                <Select style={{ height: "42px" }} value={category} onChange={handleCategoryChange}>
                   <MenuItem value="" disabled>
                     select
                   </MenuItem>
@@ -354,7 +408,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               </FormControl>
             </Grid>
           </Grid>
-          <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
+          <Grid item xs={12} style={{ marginTop: "10px" }} sm={6} md={6} lg={3}>
             <Grid container>
               <FormControl fullWidth>
                 <InputLabel
@@ -363,7 +417,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
                   choose sub category
                 </InputLabel>
                 <Select
-                  style={{ height: "38px" }}
+                  style={{ height: "42px" }}
                   value={subCategory}
                   onChange={handleSubCategoryChange}
                 >
@@ -379,7 +433,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               </FormControl>
             </Grid>
           </Grid>
-          <Grid item xs={12} style={{ marginTop: "20px" }} sm={6} md={6} lg={3}>
+          <Grid item xs={12} style={{ marginTop: "10px" }} sm={6} md={6} lg={3}>
             <Grid container>
               <FormControl fullWidth>
                 <InputLabel
@@ -387,7 +441,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
                 >
                   choose product brand
                 </InputLabel>
-                <Select style={{ height: "38px" }} value={brand} onChange={handleBrandsChange}>
+                <Select style={{ height: "42px" }} value={brand} onChange={handleBrandsChange}>
                   <MenuItem value="" disabled>
                     select
                   </MenuItem>
@@ -400,13 +454,54 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
               </FormControl>
             </Grid>
           </Grid>
+          <Grid item xs={12} style={{ marginTop: "15px" }} sm={6} md={6} lg={3}>
+            <Grid container>
+              <FormControl fullWidth style={{ height: "200px" }}>
+                <InputLabel
+                  id="demo-simple-select2-label2"
+                  style={{
+                    paddingLeft: "3px",
+                    paddingRight: "3px",
+                    backgroundColor: "#FFF",
+                  }}
+                >
+                  product options
+                </InputLabel>
+                <Select
+                  style={{ height: "42px" }}
+                  labelId="demo-simple-select2-label2"
+                  id="demo-simple-select2"
+                  value={optionsValue}
+                  onChange={handleOptionsChange}
+                  multiple
+                >
+                  <MenuItem value="" disabled>
+                    choose
+                  </MenuItem>
+                  {options.map((o) => {
+                    return (
+                      <MenuItem key={o._id} value={o._id}>
+                        {o.EnName}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
         </Grid>
       </DialogContent>
       <p style={{ color: "red", display: "flex", justifyContent: "center", fontSize: "15px" }}>
         {error}
       </p>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button
+          onClick={() => {
+            cleanUp();
+            onClose();
+          }}
+          color="primary"
+        >
           Cancel
         </Button>
         <Button
@@ -416,7 +511,7 @@ const ProductModel = ({ open, onClose, refresh, setRefresh, editedProduct }) => 
         >
           {loader ? (
             <MDSpinner color="white" />
-          ) : Object.keys(editedProduct).length != 0 ? (
+          ) : edited_flag ? (
             <>
               <Icon style={{ marginRight: "8px" }}>modeEdit</Icon>
               edit

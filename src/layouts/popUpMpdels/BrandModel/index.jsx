@@ -57,10 +57,10 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
           toast.success("successfully brand edited");
         })
         .catch((err) => {
-            if(err.response.data.message.includes("please login again")){
-              localStorage.removeItem("token");
-              window.location.reload();
-            }
+          if (err.response.data.message.includes("please login again")) {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }
           setLoader(false);
           toast.error(err.response.data.errors[0].msg);
         });
@@ -138,10 +138,12 @@ const BrandsModel = ({ open, onClose, refresh, setRefresh, editedBrand }) => {
         {error}
       </p>
       <DialogActions>
-        <Button onClick={()=>{
-          cleanUP();
-          onClose();
-        }} color="primary">
+        <Button
+          onClick={() => {
+            onClose();
+          }}
+          color="primary"
+        >
           Cancel
         </Button>
         <Button

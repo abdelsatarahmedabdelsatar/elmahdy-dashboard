@@ -125,9 +125,10 @@ const ProductsTables = () => {
                   .map((row, index) => (
                     <TableRow key={index}>
                       <TableCell> <img
-                          width={30}
+                          width={40}
                           height={30}
-                          src={`https://elmahdy.onrender.com/${row.image}`}
+                          // src={`https://elmahdy.onrender.com/${row.image}`}
+                          src={'./logo_2.png'}
                         /></TableCell>
                       <TableCell>{row.EnTitle}</TableCell>
                       <TableCell
@@ -151,7 +152,7 @@ const ProductsTables = () => {
                         </Icon>
                         <Icon
                           color="error"
-                          onClick={() => handleConfirmDeleteOpen(row._id, row.title)}
+                          onClick={() => handleConfirmDeleteOpen(row._id, row.EnTitle)}
                           style={{ cursor: "pointer" }}
                         >
                           delete

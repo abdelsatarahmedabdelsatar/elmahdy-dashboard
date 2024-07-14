@@ -22,7 +22,6 @@ import { toast } from "sonner";
 import DynamicAddText from "components/MDDynamicAddText";
 
 const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
-  console.log(editedOption)
   const [options, setOptions] = useState([]);
   const [isRelated, setIsRelated] = useState(
     Object.keys(editedOption).length != 0 ? editedOption.isRelated : false
@@ -75,7 +74,7 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [refresh]);
 
   const cleanUP = () => {
     setError("");
@@ -88,7 +87,8 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
     setIsRelated(false);
     setRequiredMoreMoney(false);
     setMoreMoney("");
-    setSupplayData([])
+    setRelatedValue("");
+    setSupplayData([]);
   };
 
   const handleTypeChange = (event) => {
@@ -107,31 +107,76 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
     setRelatedValue(event.target.value);
   };
 
+  const addedObjToAPI = () => {
+    if (isRelated && !requiredMoreMoney) {
+      return {
+        EnName: enName,
+        ArName: arName,
+        EnTitle: enTitle,
+        ArTitle: arTitle,
+        type: type,
+        // requiredMoreMoney: requiredMoreMoney,
+        moreMoney: moreMoney,
+        isRelated: isRelated,
+        relatedId: relatedOption,
+        relatedValue: relatedValue,
+        supplayData: supplayData,
+      };
+    } else if (!isRelated && requiredMoreMoney) {
+      return {
+        EnName: enName,
+        ArName: arName,
+        EnTitle: enTitle,
+        ArTitle: arTitle,
+        type: type,
+        requiredMoreMoney: requiredMoreMoney,
+        moreMoney: moreMoney,
+        isRelated: isRelated,
+        // relatedId: relatedOption,
+        // relatedValue: relatedValue,
+        supplayData: supplayData,
+      };
+    } else if (!isRelated && !requiredMoreMoney) {
+      return {
+        EnName: enName,
+        ArName: arName,
+        EnTitle: enTitle,
+        ArTitle: arTitle,
+        type: type,
+        requiredMoreMoney: requiredMoreMoney,
+        // moreMoney: moreMoney,
+        isRelated: isRelated,
+        // relatedId: relatedOption,
+        // relatedValue: relatedValue,
+        supplayData: supplayData,
+      };
+    } else {
+      return {
+        EnName: enName,
+        ArName: arName,
+        EnTitle: enTitle,
+        ArTitle: arTitle,
+        type: type,
+        requiredMoreMoney: requiredMoreMoney,
+        moreMoney: moreMoney,
+        isRelated: isRelated,
+        relatedId: relatedOption,
+        relatedValue: relatedValue,
+        supplayData: supplayData,
+      };
+    }
+  };
+
   const handleAddOption = () => {
     setLoader(true);
     if (Object.keys(editedOption).length != 0) {
       axiosInstance
-        .put(
-          "api/v1/option/" + editedOption._id,
-          {
-            EnName: enName,
-            ArName: arName,
-            EnTitle: enTitle,
-            ArTitle: arTitle,
-            type: type,
-            requiredMoreMoney: requiredMoreMoney,
-            moreMoney: moreMoney,
-            isRelated: isRelated,
-            relatedId: relatedOption,
-            relatedValue: relatedValue,
-            supplayData: supplayData,
+        .put("api/v1/option/" + editedOption._id, addedObjToAPI(), {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+        })
         .then((res) => {
           setLoader(false);
           onClose();
@@ -153,27 +198,12 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
         });
     } else {
       axiosInstance
-        .post(
-          "api/v1/option",
-          {
-            EnName: enName,
-            ArName: arName,
-            EnTitle: enTitle,
-            ArTitle: arTitle,
-            type: type,
-            requiredMoreMoney: requiredMoreMoney,
-            moreMoney: moreMoney,
-            isRelated: isRelated,
-            relatedId: relatedOption,
-            relatedValue: relatedValue,
-            supplayData: supplayData,
+        .post("api/v1/option", addedObjToAPI(), {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+        })
         .then((res) => {
           setLoader(false);
           setRefresh(!refresh);
@@ -198,7 +228,7 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
     else setEnTitle(handleInputNameChange(ev, lng));
   };
   return (
-    <Dialog maxWidth="lg" open={open} onClose={onClose} >
+    <Dialog maxWidth="lg" open={open} onClose={onClose}>
       <DialogTitle>
         {Object.keys(editedOption).length != 0 ? "edit option" : "add new option"}
       </DialogTitle>
@@ -294,9 +324,13 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
                   onChange={handleRelatedOptionChange}
                 >
                   {options
-                    .filter((o) => o._id !== editedOption._id)
+                    .filter((o) => o._id !== editedOption._id && !o.isRelated)
                     .map((op) => {
-                      return <MenuItem value={op._id}>{op.EnName}</MenuItem>;
+                      return (
+                        editedOption._id !== op._id && (
+                          <MenuItem value={op._id}>{op.EnName}</MenuItem>
+                        )
+                      );
                     })}
                 </Select>
               </FormControl>
@@ -309,17 +343,19 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
             </Grid>
           )}
 
-          <Grid item xs={12} sm={6} md={4} lg={6}>
-            <FormControl fullWidth style={{ marginTop: "7px" }}>
-              <TextField
-                style={{ height: "45px" }}
-                label="related value"
-                id="demo-simple-select"
-                value={relatedValue}
-                onChange={handleRelatedValueChangeChange}
-              />
-            </FormControl>
-          </Grid>
+          {isRelated && (
+            <Grid item xs={12} sm={6} md={4} lg={6}>
+              <FormControl fullWidth style={{ marginTop: "7px" }}>
+                <TextField
+                  style={{ height: "45px" }}
+                  label="related value"
+                  id="demo-simple-select"
+                  value={relatedValue}
+                  onChange={handleRelatedValueChangeChange}
+                />
+              </FormControl>
+            </Grid>
+          )}
           <Grid item xs={2} sm={1} md={1} lg={2}>
             <Checkbox
               checked={requiredMoreMoney}
@@ -347,10 +383,14 @@ const OptionsModel = ({ open, onClose, refresh, setRefresh, editedOption }) => {
         {error}
       </p>
       <DialogActions>
-        <Button onClick={()=>{
-          cleanUP();
-          onClose();
-        }} color="primary">
+        <Button
+          onClick={() => {
+            cleanUP();
+            setRefresh(!refresh);
+            onClose();
+          }}
+          color="primary"
+        >
           Cancel
         </Button>
         <Button

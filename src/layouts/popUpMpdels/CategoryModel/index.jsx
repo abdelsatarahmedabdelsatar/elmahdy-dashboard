@@ -150,7 +150,7 @@ const CategoryModel = ({ open, onClose, refresh, setRefresh, editedCategory }) =
       </p>
       <DialogActions>
         <Button onClick={()=>{
-          cleanUP();
+          // cleanUP();
           onClose();
         }} color="primary">
           Cancel

@@ -128,7 +128,8 @@ const CategoriesTables = () => {
                         <img
                           width={30}
                           height={30}
-                          src={`https://elmahdy.onrender.com/${row.image}`}
+                          // src={`https://elmahdy.onrender.com/${row.image}`}
+                          src={'./logo_2.png'}
                         />
                       </TableCell>
                       <TableCell>{row.EnName}</TableCell>

@@ -129,9 +129,10 @@ const BrandsTable = () => {
                       <TableCell>
                         {" "}
                         <img
-                          width={30}
+                          width={40}
                           height={30}
-                          src={`https://elmahdy.onrender.com/${row.image}`}
+                          // src={`https://elmahdy.onrender.com/${row.image}`}
+                          src={'./logo_2.png'}
                         />
                       </TableCell>
                       <TableCell>{row.EnName}</TableCell>

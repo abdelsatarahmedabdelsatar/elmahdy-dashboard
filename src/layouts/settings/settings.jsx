@@ -11,7 +11,8 @@ import { toast } from "sonner";
 function Settings() {
   const [images, setImages] = useState([]);
   const [miliSec, setMiliSec] = useState("");
-  const [loader, setLoader] = useState(false);
+  const [dataLoader, setDataLoader] = useState(true);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     axiosInstance
@@ -24,33 +25,31 @@ function Settings() {
         console.log(res.data);
         setImages(res.data.data.images);
         setMiliSec(res.data.data.numberOfSecondForImage);
-      }).catch((err)=>{
-        if(err.response.data.message.includes("please login again")){
+        setDataLoader(false);
+      })
+      .catch((err) => {
+        if (err.response.data.message.includes("please login again")) {
           localStorage.removeItem("token");
           window.location.reload();
         }
-      });;
+      });
   }, []);
 
   const handleEdit = () => {
     const formData = new FormData();
 
     for (let i = 0; i < images.length; i++) {
-      formData.append(`images`, images[i], images[i].name);
+      formData.append("images", images[i]);
     }
 
     formData.append("numberOfSecondForImage", miliSec);
     setLoader(true);
     axiosInstance
-      .put(
-        "api/v1/settings/6645f573b0c3ba6f3ced3e9c",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
+      .put("api/v1/settings/6645f573b0c3ba6f3ced3e9c", formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => {
         console.log(res.data.data);
         setLoader(false);
@@ -61,7 +60,7 @@ function Settings() {
   return (
     <>
       <DashboardLayout>
-        <div style={{ margin: "15px" }}>
+        {!dataLoader?<div style={{ margin: "15px" }}>
           <h4>Advertising images : </h4>
           <Grid
             borderRadius={2}
@@ -97,7 +96,10 @@ function Settings() {
           >
             {loader ? <MDSpinner color="white" /> : "edit"}
           </Button>
-        </div>
+        </div>:<div style={{ marginTop: "22%", marginBottom: "22%" }}>
+          <MDSpinner size={40} />
+        </div>}
+        
       </DashboardLayout>
     </>
   );
